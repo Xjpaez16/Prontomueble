@@ -27,7 +27,7 @@ public class AparecerDAO {
     int r;
 
     public void insertarAparecer(Aparecer aparecer) {
-        String sql = "INSERT INTO aparecer (id_m, id_f, cant_muebles) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO aparecer (id_m, id_f, cantidad_muebles) VALUES (?, ?, ?)";
         try (Connection con = cn.Conexion(); PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setLong(1, aparecer.getId_m().getReferencia());
             stmt.setInt(2, aparecer.getId_f().getId());
@@ -47,7 +47,7 @@ public class AparecerDAO {
             while (rs.next()) {
                 Mueble mueble = new Mueble(rs.getLong("id_m"));
                 Factura factura = new Factura(rs.getInt("id_f"));
-                int cantMuebles = rs.getInt("cant_muebles");
+                int cantMuebles = rs.getInt("cantidad_muebles");
                 Aparecer aparecer = new Aparecer(mueble, factura, cantMuebles);
                 listaAparecer.add(aparecer);
             }
@@ -59,7 +59,7 @@ public class AparecerDAO {
     }
 
     public void actualizarAparecer(Aparecer aparecer) {
-        String sql = "UPDATE aparecer SET cant_muebles = ? WHERE id_m = ? AND id_f = ?";
+        String sql = "UPDATE aparecer SET cantidad_muebles = ? WHERE id_m = ? AND id_f = ?";
         try (Connection con = cn.Conexion(); PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, aparecer.getCant_muebles());
             stmt.setLong(2, aparecer.getId_m().getReferencia());
