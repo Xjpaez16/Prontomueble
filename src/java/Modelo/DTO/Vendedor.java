@@ -22,6 +22,9 @@ public class Vendedor {
         this.id = id;
     }
 
+    public Vendedor() {
+    }
+
     
     
     public Vendedor(Long id, String nombre, String usuario, String clave) {

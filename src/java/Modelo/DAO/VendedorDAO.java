@@ -20,7 +20,28 @@ public class VendedorDAO {
     PreparedStatement ps;
     ResultSet rs;
     int r;
-
+    public Vendedor Validar(String user, String password){
+        Vendedor v =  new Vendedor();
+        String  sql = "SELECT * FROM vendedor WHERE usuario = ? AND clave = ?";
+        try {
+            con=cn.Conexion();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, user);
+            ps.setString(2, password);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                v.setId(rs.getLong("id"));
+                v.setNombre(rs.getString("nombre"));
+                v.setUsuario(rs.getString("usuario"));
+                v.setClave(rs.getString("clave"));
+            }
+            con.close();
+            ps.close();
+            rs.close();
+        } catch (Exception e) {
+        }
+        return v;
+    }
     public void insertarVendedor(Vendedor vendedor) {
         String sql = "INSERT INTO vendedor (id, nombre, usuario, clave) VALUES (?, ?, ?, ?)";
 
