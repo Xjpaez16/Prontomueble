@@ -26,51 +26,64 @@ public class ClienteDAO {
     PreparedStatement ps;
     ResultSet rs;
     int r;
-    public void insertarCliente(Cliente cliente) {
+    public int insertarCliente(Cliente cliente) {
         String sql = "INSERT INTO cliente (id, nombre, direccion, correo, fecha_registro) VALUES (?, ?, ?, ?, ?)";
+        int resultado = 0;
 
-        try (Connection con = cn.Conexion(); PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setLong(1, cliente.getId());
-            stmt.setString(2, cliente.getNombre());
-            stmt.setString(3, cliente.getDireccion());
-            stmt.setString(4, cliente.getCorreo());
+        try {
+            con = cn.Conexion();
+            if (con == null) {
+                System.out.println("❌ Error: No se pudo conectar a la BD.");
+                return 0;
+            }
+            System.out.println("✅ Conexión establecida.");
 
-            
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            stmt.setString(5, cliente.getFecha_registro().format(formatter));
-
-            stmt.executeUpdate();
-            System.out.println("Cliente insertado correctamente.");
-
-            insertarTelefonos(cliente); 
-
-        } catch (Exception e) {
-            System.err.println("Error al insertar cliente: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    private void insertarTelefonos(Cliente cliente) {
-        String sql = "INSERT INTO telefono_c (telefono, id_c) VALUES (?, ?)";
-
-        try (Connection con = cn.Conexion(); PreparedStatement stmt = con.prepareStatement(sql)) {
-
-            for (TelefonoC telefono :  cliente.getTelefonos()) {
-                stmt.setString(1, telefono.getnTelefono());
-                stmt.setLong(2,  cliente.getId());
-                stmt.executeUpdate();
+            // Verificar si el ID ya existe
+            String checkSql = "SELECT COUNT(*) FROM cliente WHERE id = ?";
+            try (PreparedStatement checkStmt = con.prepareStatement(checkSql)) {
+                checkStmt.setLong(1, cliente.getId());
+                ResultSet rs = checkStmt.executeQuery();
+                if (rs.next() && rs.getInt(1) > 0) {
+                    System.out.println("⚠ ID ya existe: " + cliente.getId());
+                    return 0;
+                }
             }
 
-            System.out.println("Teléfonos insertados correctamente.");
+            // Insertar cliente
+            con.setAutoCommit(false);  // Asegurar que los cambios se confirmen
+            ps = con.prepareStatement(sql);
+            ps.setLong(1, cliente.getId());
+            ps.setString(2, cliente.getNombre());
+            ps.setString(3, cliente.getDireccion());
+            ps.setString(4, cliente.getCorreo());
+            ps.setDate(5, java.sql.Date.valueOf(cliente.getFecha_registro()));
+
+            resultado = ps.executeUpdate();
+            con.commit();  // Confirmar la transacción
+            System.out.println("✅ Cliente insertado correctamente.");
+
         } catch (Exception e) {
-            System.err.println("Error al insertar teléfonos: " + e.getMessage());
-            e.printStackTrace();
+            System.out.println("❌ Error al insertar cliente: " + e);
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (Exception e) {
+                System.out.println("❌ Error al cerrar conexión: " + e);
+            }
         }
+        return resultado;
     }
+
+
 
     public List<Cliente> ListaClientes() {
         List<Cliente> listaClientes = new ArrayList<>();
-        String sql = "SELECT c.id, c.nombre, c.direccion, c.correo, c.fecha_registro, t.telefono "
+        String sql = "SELECT c.id, c.nombre, c.direccion, c.correo, c.fecha_registro, t.n_telefono "
                 + "FROM Cliente c "
                 + "LEFT JOIN telefono_c t ON c.id = t.id_c";
 
@@ -108,7 +121,7 @@ public class ClienteDAO {
     public void actualizarCliente(Cliente cliente) {
         String sqlActualizarCliente = "UPDATE cliente SET nombre = ?, direccion = ?, correo = ?, fecha_registro = ? WHERE id = ?";
         String sqlEliminarTelefonos = "DELETE FROM telefono_c WHERE id_c = ?";
-        String sqlInsertarTelefono = "INSERT INTO telefono_c (telefono, id_c) VALUES (?, ?)";
+        String sqlInsertarTelefono = "INSERT INTO telefono_c (n_telefono, id_c) VALUES (?, ?)";
 
         try (Connection con = cn.Conexion()) {
            
