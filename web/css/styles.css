@@ -1,0 +1,535 @@
+/*RESET*/
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins',sans-serif;
+}
+
+/*HEADER*/
+header{
+    height: 100px;
+    background-color: white;
+    padding: 0 50px;    
+    color: black;
+    display: flex;
+    align-items: center;
+}
+
+.logo{
+    height: 180px;
+    width: 280px;
+    transition: 1.5s;
+}
+
+.logo:hover{
+    transform: scale(1.1);
+}
+
+.menu{
+    display: flex;
+    justify-content: center; /* Centra el contenido dentro del contenedor del menú */
+    flex-grow: 1;
+}
+
+.menu ul li{
+    display: inline;
+} 
+.menu ul li a{
+    text-transform: uppercase;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+    padding: 0 20px;
+    padding-right: 100px;
+    transition: 0.4s;
+}
+
+.mostrar-menu,
+.esconder-menu{
+    font-size: 30px;
+    cursor: pointer;
+    display: none;
+    transition: 0.4s;
+}
+
+.mostrar-menu{
+    order: 1;
+}
+
+.menu ul li a:hover,
+.mostrar-menu:hover,
+.esconder-menu:hover{
+    color: brown;
+}
+
+#check{
+    display: none;
+}
+
+.div1{
+    height: 10px;
+    background-color: white;
+}
+
+#contenedorcarrusel{
+    height: 500px;
+    padding-left: 200px;
+    padding-right: 200px;
+    overflow: hidden;    
+}
+
+.carruselitem{
+    height: 100%;
+    position: relative;
+}
+
+.tarjeta {
+    background-color: rgb(255, 255, 255);
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centra la imagen verticalmente */
+    overflow: hidden; /* Evita que la imagen sobresalga */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    
+}
+
+.tarjeta img {
+    width: 100%; /* Que ocupe todo el ancho disponible */
+    height: 100%; /* Que ocupe toda la altura */
+    padding-top: 100px;
+    object-fit: cover; /* Recorta la imagen sin deformarla */
+    border-radius: 10px; /* Para que la imagen también tenga bordes redondeados */
+}
+
+
+#a img{
+    object-fit: cover;
+}
+
+a{
+    text-decoration: none;
+}
+
+#a{
+    background-color: #192163;
+}
+
+#b{
+    background-color: rgb(153, 94, 17);
+}
+
+#c{
+    background-color: rgb(181, 233, 151);
+}
+
+.tarjeta img{
+    height: 600px;
+    width: 100%;
+}
+
+.flecha{
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+
+i{
+    color: white;
+    font-size: 50px;
+}
+
+.contenedorpuntos{
+    display: flex;
+    justify-content: center;
+}
+
+.contenedorpuntos a{
+    padding-top: 5px;
+    padding-right: 15px;
+}
+
+.contenedorpuntos a i{
+    font-size: 15px;
+    color: black;
+}
+
+/* PRODUCTOS */
+
+.item figure img{
+    border-radius: 10px 10px 0 0;
+    max-width: 100%;
+}
+
+.container-item{
+    padding: 40px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.item{
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease;
+}
+
+.item:hover{
+    box-shadow: 0 10px 20px black;
+}
+
+.info-producto{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: rgb(255, 255, 255);
+    padding: 10px 20px;
+}
+
+.item img{
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    transition: all .5s;
+}
+
+.item figure{
+    overflow: hidden;
+}
+
+.item:hover img{
+    transform: scale(1.2);
+}
+
+.precio{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+    font-size: 30px;
+}
+
+.info-producto p{
+    text-align: center;
+}
+
+.boton{
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    margin: 0 auto;
+    color: white;
+    background-color: black;
+}
+
+.boton a{
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    padding: 15px;
+}
+
+.boton:hover{
+    background-color: orangered;
+}
+
+/* ITEMS SEPARADOS */
+.bodysolo{
+    background-color: #f5f1f1 ;
+}
+
+
+.container-item1 {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;  /* Centrado horizontal */
+    align-items: center;      /* Centrado vertical */
+}
+
+.item1 {
+    width: 65%;
+    height: 100%;
+    background-color:white;
+    display: flex;
+    flex-direction: row;    /* Apilar los elementos verticalmente */
+           /* Centrado horizontal de los elementos dentro de item1 */
+    padding: 50px;
+    border-radius: 20px;
+}
+
+.item1 figure{
+    color: white;
+    display: flex;
+    width: 500px;
+    height: 500px;
+    margin-top: 50px;
+    margin-right: auto;
+    margin-left: 30px;
+}
+
+.item1 figure img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.info-producto1 h2, 
+.info-producto1 ul li, 
+.info-producto1 p
+{    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+}
+
+.info-producto1{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /*background-color: #029bf9;*/
+    width: 40%;
+    margin-top: 50px;
+    margin-right: 50px;
+}
+
+.info-producto1 ul{
+    margin-top: 30px;
+}
+
+.info-producto1 ul li{
+    font-size: 20px;
+    margin-top: 20px;
+    margin-left: 50px;
+}
+
+.precio1{
+    /*background-color: #029bf9;*/
+    font-size: 50px;
+    margin-top: 50px;
+    text-align: center;
+}
+
+.itemboton{
+    display: flex;
+    justify-content: center;
+}
+
+.boton1 a {
+    text-decoration: none;
+    color: inherit; /* Asegura que herede el color del botón */
+}
+
+.boton1{
+    color: white;
+    background-color: black;
+    margin-top: 50px;
+    padding: 15px;
+    width: 50%;
+}
+
+.boton1:hover{
+    background-color: orangered;
+}
+
+.infoenvio{
+    margin-top: 50px;
+    width: auto;
+    height: auto;
+}
+
+.infoenvio h2{
+    font-size: 50px;
+}
+
+.infoenvio h2,
+.infoenvio h3
+{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    margin-bottom: 50px;
+    margin-left: 500px;
+    margin-right: 500px;
+    text-align: center;
+}
+
+.infoenvio h3{
+    font-size: 28px;
+    font-weight: 100;
+}
+
+/* SOBRE NOSOTROS */
+.info{
+    height: 80vh; 
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.infoimg img{
+    width: 400px;
+    height: 400px;
+}
+
+.infotxt{
+    padding-right: 100px;
+    width: 50%;
+}
+
+.infotxt h1 {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    padding-bottom: 40px;
+    font-size: 50px;
+    color: #029bf9;
+    -webkit-text-stroke: 2px black; /* Borde alrededor del texto */
+}
+
+.infotxt h2{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 25px;
+}
+
+
+/* RESPONSIVE*/
+
+@media(max-width: 768px){
+    /* HEADER */
+    .mostrar-menu,
+    .esconder-menu{
+        display: block;
+    }
+    
+    header{
+        height: 100px;
+        background-color: #029bf9;
+        padding: 0 10px;
+        color: #011d45;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .menu{
+        position: fixed;
+        width: 100%;
+        height: 100vh;
+        background: #029bf9;
+        right: -100%;
+        top: 0;
+        text-align: center;
+        padding: 100px 0px;
+        z-index: 100;
+        transition: 0.8s;
+    }
+
+    .menu ul li{
+        display: block;
+        padding: 20px;
+    }
+
+    .esconder-menu{
+        position: absolute;
+        top: 40px;
+        right: 40px;
+    }
+
+    #check:checked ~ .menu{
+        right: 0;
+    }
+
+    #contenedorcarrusel{
+        height: 250px;
+        padding-left: 20px;
+        padding-right: 20px;
+        overflow: hidden;    
+    }
+
+    .tarjeta img{
+        height: 100%;
+        width: 100%;
+    }
+
+    /* PRODUCTOS RESPONSIVE */
+
+    .container-item{
+        padding: 40px;
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 20px;
+    }
+
+    /* PRODUCTOS SEPARADOS RESPONSIVE*/
+
+    .item1 {
+        width: 100%;
+        height: 100%;
+        background-color:white;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;    /* Apilar los elementos verticalmente */
+               /* Centrado horizontal de los elementos dentro de item1 */
+        padding: 50px;
+        border-radius: 20px;
+    }
+
+    .item1 figure{
+        color: white;
+        display: flex;
+        width: 300px;
+        height: 300px;
+        margin: auto;
+        margin-top: 50px;
+    }
+
+    .info-producto1{
+        display: flex;
+        flex-direction: column;
+        /*background-color: #029bf9;*/
+        width: 100%;
+        margin-top: 50px;
+        margin-right: 50px;
+    }
+
+    /* SOBRE NOSOTROS RESPONSIVE */
+.info{
+    height: 80vh; 
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+}
+
+.infoimg img{
+    width: 400px;
+    height: 400px;
+}
+
+.infotxt{
+    padding-right: 100px;
+    width: 100%;
+}
+
+.infotxt h1 {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    padding-bottom: 40px;
+    font-size: 50px;
+    color: #029bf9;
+    -webkit-text-stroke: 2px black; /* Borde alrededor del texto */
+}
+
+.infotxt h2{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 25px;
+}
+
+}

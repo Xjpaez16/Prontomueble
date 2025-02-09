@@ -16,7 +16,7 @@ public class Conexion {
     Connection con;
     String url="jdbc:postgresql://localhost:5432/prontomueble";
     String user="postgres";
-    String pass="juancho16";
+    String pass="1010";
     public Connection Conexion(){
         try {
             Class.forName("org.postgresql.Driver");
