@@ -17,6 +17,10 @@ public class Factura {
     private Cliente id_c;
     private LocalDate fecha_venta;
 
+    public Factura(int id) {
+        this.id = id;
+    }
+    
     public Factura(int id, Long precio, Vendedor id_v, Cliente id_c, LocalDate fecha_venta) {
         this.id = id;
         this.precio = precio;

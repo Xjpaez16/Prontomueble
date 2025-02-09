@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author ielcj
  */
-class Proveedor {
+public class Proveedor {
     private Long id;
     private String nombre;
     private String direccion;

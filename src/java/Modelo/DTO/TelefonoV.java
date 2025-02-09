@@ -8,7 +8,7 @@ package Modelo.DTO;
  *
  * @author ielcj
  */
-class TelefonoV {
+public class TelefonoV {
     private String nTelefono;
     private Vendedor vendedor;
 

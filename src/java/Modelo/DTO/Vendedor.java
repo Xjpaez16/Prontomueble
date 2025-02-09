@@ -11,12 +11,19 @@ import java.util.List;
  *
  * @author ielcj
  */
-class Vendedor {
+public class Vendedor {
     private Long id;
     private String nombre;
     private String usuario;
     private String clave;
     private List<TelefonoV> telefonos;
+
+    public Vendedor(Long id) {
+        this.id = id;
+    }
+
+    
+    
     public Vendedor(Long id, String nombre, String usuario, String clave) {
         this.id = id;
         this.nombre = nombre;

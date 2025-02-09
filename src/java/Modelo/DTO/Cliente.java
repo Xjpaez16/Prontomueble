@@ -12,14 +12,20 @@ import java.util.List;
  *
  * @author ielcj
  */
-class Cliente {
+public class Cliente {
     private Long id;
     private String nombre;
     private String direccion;
     private String correo;
     private LocalDate fecha_registro;
     private List<TelefonoC> telefonos;
+
+    public Cliente(Long id) {
+        this.id = id;
+    }
+
     
+        
     public Cliente(Long id, String nombre, String direccion, String correo, LocalDate fecha_registro) {
         this.id = id;
         this.nombre = nombre;

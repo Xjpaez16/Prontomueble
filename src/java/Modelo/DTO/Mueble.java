@@ -12,17 +12,21 @@ package Modelo.DTO;
 public class Mueble {
     private Long referencia;
     private String nombre;
-    private Tipo_mueble tipo;
+    private String tipo;
     private double alto;
     private double ancho;
     private double profundidad;
-    private Material_mueble material;
-    private Color_mueble color;
+    private String material;
+    private String color;
     private Long precio;
     private int cantidad;
     private String url;
 
-    public Mueble(Long referencia, String nombre, Tipo_mueble tipo, double alto, double ancho, double profundidad, Material_mueble material, Color_mueble color, Long precio, int cantidad, String url) {
+    public Mueble(Long referencia) {
+        this.referencia = referencia;
+    }
+    
+    public Mueble(Long referencia, String nombre, String tipo, double alto, double ancho, double profundidad, String material, String color, Long precio, int cantidad, String url) {
         this.referencia = referencia;
         this.nombre = nombre;
         this.tipo = tipo;
@@ -52,11 +56,11 @@ public class Mueble {
         this.nombre = nombre;
     }
 
-    public Tipo_mueble getTipo() {
+    public String getTipo() {
         return tipo;
     }
 
-    public void setTipo(Tipo_mueble tipo) {
+    public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 
@@ -84,19 +88,19 @@ public class Mueble {
         this.profundidad = profundidad;
     }
 
-    public Material_mueble getMaterial() {
+    public String getMaterial() {
         return material;
     }
 
-    public void setMaterial(Material_mueble material) {
+    public void setMaterial(String material) {
         this.material = material;
     }
 
-    public Color_mueble getColor() {
+    public String getColor() {
         return color;
     }
 
-    public void setColor(Color_mueble color) {
+    public void setColor(String color) {
         this.color = color;
     }
 
@@ -123,5 +127,9 @@ public class Mueble {
     public void setUrl(String url) {
         this.url = url;
     }
+
+  
+
+   
     
 }

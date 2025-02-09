@@ -10,7 +10,7 @@ package Modelo.DTO;
  *
  * @author ielcj
  */
-class TelefonoC {
+public class TelefonoC {
     private String nTelefono;
     private Cliente cliente;
 
