@@ -11,9 +11,11 @@ import Modelo.DTO.TelefonoC;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -26,64 +28,51 @@ public class ClienteDAO {
     PreparedStatement ps;
     ResultSet rs;
     int r;
-    public int insertarCliente(Cliente cliente) {
+    public void insertarCliente(Cliente cliente) {
         String sql = "INSERT INTO cliente (id, nombre, direccion, correo, fecha_registro) VALUES (?, ?, ?, ?, ?)";
-        int resultado = 0;
 
-        try {
-            con = cn.Conexion();
-            if (con == null) {
-                System.out.println("❌ Error: No se pudo conectar a la BD.");
-                return 0;
-            }
-            System.out.println("✅ Conexión establecida.");
+        try (Connection con = cn.Conexion(); PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setLong(1, cliente.getId());
+            stmt.setString(2, cliente.getNombre());
+            stmt.setString(3, cliente.getDireccion());
+            stmt.setString(4, cliente.getCorreo());
+            stmt.setDate(5,cliente.getFecha_registro());
 
-            // Verificar si el ID ya existe
-            String checkSql = "SELECT COUNT(*) FROM cliente WHERE id = ?";
-            try (PreparedStatement checkStmt = con.prepareStatement(checkSql)) {
-                checkStmt.setLong(1, cliente.getId());
-                ResultSet rs = checkStmt.executeQuery();
-                if (rs.next() && rs.getInt(1) > 0) {
-                    System.out.println("⚠ ID ya existe: " + cliente.getId());
-                    return 0;
-                }
-            }
+            stmt.executeUpdate();
+            System.out.println("Cliente insertado correctamente.");
 
-            // Insertar cliente
-            con.setAutoCommit(false);  // Asegurar que los cambios se confirmen
-            ps = con.prepareStatement(sql);
-            ps.setLong(1, cliente.getId());
-            ps.setString(2, cliente.getNombre());
-            ps.setString(3, cliente.getDireccion());
-            ps.setString(4, cliente.getCorreo());
-            ps.setDate(5, java.sql.Date.valueOf(cliente.getFecha_registro()));
-
-            resultado = ps.executeUpdate();
-            con.commit();  // Confirmar la transacción
-            System.out.println("✅ Cliente insertado correctamente.");
+            insertarTelefonos(cliente);
 
         } catch (Exception e) {
-            System.out.println("❌ Error al insertar cliente: " + e);
-        } finally {
-            try {
-                if (ps != null) {
-                    ps.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (Exception e) {
-                System.out.println("❌ Error al cerrar conexión: " + e);
-            }
+            System.err.println("Error al insertar cliente: " + e.getMessage());
+            e.printStackTrace();
         }
-        return resultado;
     }
+
+    private void insertarTelefonos(Cliente cliente) {
+        String sql = "INSERT INTO telefono_c (n_telefono, id_c) VALUES (?, ?)";
+
+        try (Connection con = cn.Conexion(); PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            for (TelefonoC telefono : cliente.getTelefonos()) {
+                stmt.setString(1, telefono.getnTelefono());
+                stmt.setLong(2, cliente.getId());
+                stmt.executeUpdate();
+            }
+
+            System.out.println("Teléfonos insertados correctamente.");
+        } catch (Exception e) {
+            System.err.println("Error al insertar teléfonos: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 
 
 
     public List<Cliente> ListaClientes() {
         List<Cliente> listaClientes = new ArrayList<>();
-        String sql = "SELECT c.id, c.nombre, c.direccion, c.correo, c.fecha_registro, t.n_telefono "
+        String sql = "SELECT c.*, t.n_telefono "
                 + "FROM Cliente c "
                 + "LEFT JOIN telefono_c t ON c.id = t.id_c";
 
@@ -98,10 +87,10 @@ public class ClienteDAO {
                 String direccion = rs.getString("direccion");
                 String correo = rs.getString("correo");
                 LocalDate fechaRegistro = rs.getDate("fecha_registro").toLocalDate();
-                String telefono = rs.getString("telefono");
+                String telefono = rs.getString("n_telefono");
 
                 if (clienteIdActual == null || !clienteIdActual.equals(id)) {
-                    clienteActual = new Cliente(id, nombre, direccion, correo, fechaRegistro);
+                    clienteActual = new Cliente(id, nombre, direccion, correo, Date.valueOf(fechaRegistro));
                     listaClientes.add(clienteActual);
                     clienteIdActual = id;
                 }
@@ -110,6 +99,17 @@ public class ClienteDAO {
                     clienteActual.aggTelefono(new TelefonoC(telefono, clienteActual));
                 }
             }
+            /*
+            while (rs.next()) {
+                Cliente cl = new Cliente();
+                cl.setId(rs.getLong(1));
+                cl.setNombre(rs.getString(2));
+                cl.setDireccion(rs.getString(3));
+                cl.setCorreo(rs.getString(4));
+                cl.setFecha_registro(rs.getDate(5));
+                listaClientes.add(cl);
+            }
+            */
         } catch (Exception e) {
             System.err.println("Error al obtener clientes: " + e.getMessage());
             e.printStackTrace();
@@ -130,9 +130,7 @@ public class ClienteDAO {
                 stmtCliente.setString(1, cliente.getNombre());
                 stmtCliente.setString(2, cliente.getDireccion());
                 stmtCliente.setString(3, cliente.getCorreo());
-
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                stmtCliente.setString(4, cliente.getFecha_registro().format(formatter));
+                stmtCliente.setDate(4, cliente.getFecha_registro());
 
                 stmtCliente.setLong(5, cliente.getId());
                 stmtCliente.executeUpdate();

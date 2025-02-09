@@ -6,6 +6,7 @@ package Modelo.DTO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -17,23 +18,28 @@ public class Cliente {
     private String nombre;
     private String direccion;
     private String correo;
-    private LocalDate fecha_registro;
+    private Date fecha_registro;
     private List<TelefonoC> telefonos;
 
     public Cliente(Long id) {
         this.id = id;
     }
 
-    
-        
-    public Cliente(Long id, String nombre, String direccion, String correo, LocalDate fecha_registro) {
+    public Cliente() {
+    }
+
+    public Cliente(Long id, String nombre, String direccion, String correo, Date fecha_registro) {
         this.id = id;
         this.nombre = nombre;
         this.direccion = direccion;
         this.correo = correo;
         this.fecha_registro = fecha_registro;
-        this.telefonos =  new ArrayList<>();
+        this.telefonos = new ArrayList<>();
     }
+
+    
+        
+  
     
     public void aggTelefono(TelefonoC telefono) {
         this.telefonos.add(telefono);
@@ -72,13 +78,14 @@ public class Cliente {
         this.correo = correo;
     }
 
-    public LocalDate getFecha_registro() {
+    public Date getFecha_registro() {
         return fecha_registro;
     }
 
-    public void setFecha_registro(LocalDate fecha_registro) {
+    public void setFecha_registro(Date fecha_registro) {
         this.fecha_registro = fecha_registro;
     }
+
 
     public List<TelefonoC> getTelefonos() {
         return telefonos;
