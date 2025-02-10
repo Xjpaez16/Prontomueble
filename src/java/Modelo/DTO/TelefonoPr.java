@@ -19,6 +19,9 @@ public class TelefonoPr {
         this.proveedor = proveedor;
     }
 
+    public TelefonoPr() {
+    }
+
     public String getnTelefono() {
         return nTelefono;
     }

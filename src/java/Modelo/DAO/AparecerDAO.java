@@ -45,7 +45,7 @@ public class AparecerDAO {
         String sql = "SELECT * FROM aparecer";
         try (Connection con = cn.Conexion(); PreparedStatement stmt = con.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                Mueble mueble = new Mueble(rs.getLong("id_m"));
+                Mueble mueble = new Mueble(rs.getInt("id_m"));
                 Factura factura = new Factura(rs.getInt("id_f"));
                 int cantMuebles = rs.getInt("cantidad_muebles");
                 Aparecer aparecer = new Aparecer(mueble, factura, cantMuebles);

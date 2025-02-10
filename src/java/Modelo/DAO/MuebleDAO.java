@@ -9,6 +9,7 @@ import Modelo.DTO.Mueble;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +72,7 @@ public class MuebleDAO {
 
             while (rs.next()) {
                 Mueble mueble = new Mueble(
-                        rs.getLong("referencia"),
+                        rs.getInt("referencia"),
                         rs.getString("nombre"),
                         rs.getString("t_mueble"),
                         rs.getDouble("alto_d"),
@@ -120,6 +121,52 @@ public class MuebleDAO {
             return false;
         }
     }
+    
+    
+    public Mueble listarId(int id) {
+        Mueble m = null; 
+        String sql = "SELECT m.referencia, m.nombre, m.alto_d, m.ancho_d, m.profundidad_d, " +
+             "m.precio, m.cantidad, m.url, t.t_mueble AS tipo, mat.nom_material AS material, c.n_color AS color " +
+             "FROM mueble m " +
+             "LEFT JOIN tipo t ON m.id_tipo = t.id " +
+             "LEFT JOIN material mat ON m.id_material = mat.id " +
+             "LEFT JOIN color c ON m.id_color = c.id " +
+             "WHERE m.referencia = ?";
+
+        try {
+            con = cn.Conexion();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id);  
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                if (m == null) {  
+                    m = new Mueble();
+                    m.setReferencia(rs.getInt("referencia"));
+                    m.setNombre(rs.getString("nombre"));
+                    m.setTipo(rs.getString("tipo"));
+                    m.setAlto(rs.getDouble("alto_d"));
+                    m.setAncho(rs.getDouble("ancho_d"));
+                    m.setProfundidad(rs.getDouble("profundidad_d"));
+                    m.setMaterial(rs.getString("material"));
+                    m.setColor(rs.getString("color"));
+                    m.setPrecio(rs.getLong("precio"));
+                    m.setCantidad(rs.getInt("cantidad"));
+                    m.setUrl(rs.getString("url"));
+                }
+
+            }
+
+            rs.close();
+            ps.close();
+            con.close();
+
+        } catch (SQLException e) {
+            System.out.println("Error al listar Mueble por REF: " + e);
+        }
+
+        return m;
+    }
 
     public boolean actualizar(Mueble mueble) {
         String sql = "UPDATE mueble SET nombre = ?, id_tipo = (SELECT id FROM tipo WHERE t_mueble = ?), "
@@ -150,7 +197,7 @@ public class MuebleDAO {
         }
     }
 
-    public boolean eliminar(Long referencia) {
+    public boolean eliminar(int referencia) {
         String sql = "DELETE FROM mueble WHERE referencia = ?";
 
         try (Connection con = cn.Conexion(); PreparedStatement ps = con.prepareStatement(sql)) {

@@ -6,9 +6,15 @@ package Controlador;
 
 import Modelo.DAO.ClienteDAO;
 import Modelo.DAO.MuebleDAO;
+import Modelo.DAO.ProveedorDAO;
+import Modelo.DAO.VendedorDAO;
 import Modelo.DTO.Cliente;
 import Modelo.DTO.Mueble;
+import Modelo.DTO.Proveedor;
 import Modelo.DTO.TelefonoC;
+import Modelo.DTO.TelefonoPr;
+import Modelo.DTO.TelefonoV;
+import Modelo.DTO.Vendedor;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -143,6 +149,309 @@ public class ControladorCatalogo extends HttpServlet {
 
             request.getRequestDispatcher("Clientes.jsp").forward(request, response);
         }
+        
+        
+        if (menu.equals("Proveedor")) {
+            ProveedorDAO pdao = new ProveedorDAO();
+
+            if (accion == null) {
+                accion = "Listar"; // Acción por defecto
+            }
+
+            switch (accion) {
+                case "Listar": {
+                    List<Proveedor> lista = pdao.ListaProveedores();
+                   
+                    request.setAttribute("listaProveedores", lista);
+                    
+                    break;
+                }
+                case "Agregar":{
+                    Proveedor p = new Proveedor();
+                    Long id = Long.parseLong(request.getParameter("txtId"));
+                    String nom = request.getParameter("txtNombre");
+                    String dirc = request.getParameter("txtDireccion");
+                    String cont = request.getParameter("txtContacto");
+                    
+                    p.setId(id);
+                    p.setNombre(nom);
+                    p.setDireccion(dirc);
+                    p.setP_contacto(cont);
+                    String[] telefonosArray = request.getParameterValues("txtTelefono");
+                    List<TelefonoPr> listaTelefonos = new ArrayList<>();
+                    if (telefonosArray != null) {
+                        for (String numTelefono : telefonosArray) {
+                            if (numTelefono != null && !numTelefono.trim().isEmpty()) {
+                                listaTelefonos.add(new TelefonoPr(numTelefono, p));
+                            }
+                        }
+
+                    }
+                    p.setTelefonos(listaTelefonos);
+                    pdao.insertarProveedor(p);
+
+                    response.sendRedirect("Catalogo?menu=Proveedor&accion=Listar");
+                    return;
+                
+                }
+                case "Editar":{
+                    Long idp = Long.parseLong(request.getParameter("id"));
+                    Proveedor p = pdao.listarId(idp);
+                    request.setAttribute("proveedor", p);
+                    List lista2 = pdao.ListaProveedores();
+                    request.setAttribute("listaProveedores", lista2);
+                    break;
+                }
+                case "Actualizar" : {
+                    Proveedor p = new Proveedor();
+                    TelefonoPr pr = new TelefonoPr();
+                    Long idc = Long.parseLong(request.getParameter("txtId"));
+                    String nom = request.getParameter("txtNombre");
+                    String dir = request.getParameter("txtDireccion");
+                    String cont = request.getParameter("txtContacto");
+                    
+                   
+                    p.setNombre(nom);
+                    p.setDireccion(dir);
+                    p.setP_contacto(cont);
+                    p.setId(idc);
+                    
+                    String[] telefonosArray = request.getParameterValues("txtTelefono");
+                    List<TelefonoPr> listaTelefonos = new ArrayList<>();
+                    if (telefonosArray != null) { 
+                        for (String numTelefono : telefonosArray) {
+                            if (numTelefono != null && !numTelefono.trim().isEmpty()) {
+                                listaTelefonos.add(new TelefonoPr(numTelefono, p));
+                            }
+                        }
+                        
+                    }
+                    p.setTelefonos(listaTelefonos);
+                    pdao.actualizarProveedor(p);
+                    List lista3 = pdao.ListaProveedores();
+                    request.setAttribute("listaProveedores", lista3);
+                    break;
+                
+                }
+                case "Delete":{
+                    Long idp = Long.parseLong(request.getParameter("id"));
+                    pdao.eliminarProveedor(idp);
+                    response.sendRedirect("Catalogo?menu=Proveedor&accion=Listar");
+                    return;
+                }
+                default: {
+                    request.setAttribute("mensaje", "Acción no reconocida");
+                    break;
+                }
+                
+            }
+
+            request.getRequestDispatcher("Proveedor.jsp").forward(request, response);
+        }
+        
+        
+        if (menu.equals("Vendedor")) {
+            VendedorDAO vdao = new VendedorDAO();
+
+            if (accion == null) {
+                accion = "Listar"; // Acción por defecto
+            }
+
+            switch (accion) {
+                case "Listar": {
+                    List<Vendedor> lista = vdao.ListaVendedores();
+                   
+                    request.setAttribute("listaVendedores", lista);
+                    
+                    break;
+                }
+                case "Agregar":{
+                    Vendedor v = new Vendedor();
+                    Long id = Long.parseLong(request.getParameter("txtId"));
+                    String nom = request.getParameter("txtNombre");
+                    String user = request.getParameter("txtUser");
+                    String clave = request.getParameter("txtClave");
+                    
+                    v.setId(id);
+                    v.setNombre(nom);
+                    v.setUsuario(user);
+                    v.setClave(clave);
+                    String[] telefonosArray = request.getParameterValues("txtTelefono");
+                    List<TelefonoV> listaTelefonos = new ArrayList<>();
+                    if (telefonosArray != null) {
+                        for (String numTelefono : telefonosArray) {
+                            if (numTelefono != null && !numTelefono.trim().isEmpty()) {
+                                listaTelefonos.add(new TelefonoV(numTelefono, v));
+                            }
+                        }
+
+                    }
+                    v.setTelefonos(listaTelefonos);
+                    vdao.insertarVendedor(v);
+
+                    response.sendRedirect("Catalogo?menu=Vendedor&accion=Listar");
+                    return;
+                
+                }
+                case "Editar":{
+                    Long idv = Long.parseLong(request.getParameter("id"));
+                    Vendedor v = vdao.listarId(idv);
+                    request.setAttribute("vendedor", v);
+                    List lista2 = vdao.ListaVendedores();
+                    request.setAttribute("listaVendedores", lista2);
+                    break;
+                }
+                case "Actualizar" : {
+                    Vendedor v = new Vendedor();
+                    TelefonoV tv = new TelefonoV();
+                    Long idv = Long.parseLong(request.getParameter("txtId"));
+                    String nom = request.getParameter("txtNombre");
+                    String user = request.getParameter("txtUser");
+                    String clave = request.getParameter("txtClave");
+                    
+                   
+                    v.setNombre(nom);
+                    v.setUsuario(user);
+                    v.setClave(clave);
+                    v.setId(idv);
+                    
+                    String[] telefonosArray = request.getParameterValues("txtTelefono");
+                    List<TelefonoV> listaTelefonos = new ArrayList<>();
+                    if (telefonosArray != null) { 
+                        for (String numTelefono : telefonosArray) {
+                            if (numTelefono != null && !numTelefono.trim().isEmpty()) {
+                                listaTelefonos.add(new TelefonoV(numTelefono, v));
+                            }
+                        }
+                        
+                    }
+                    v.setTelefonos(listaTelefonos);
+                    vdao.actualizarVendedor(v);
+                    List lista3 = vdao. ListaVendedores();
+                    request.setAttribute("listaVendedores", lista3);
+                    break;
+                
+                }
+                case "Delete":{
+                    Long idv = Long.parseLong(request.getParameter("id"));
+                    vdao.eliminarVendedor(idv);
+                    response.sendRedirect("Catalogo?menu=Vendedor&accion=Listar");
+                    return;
+                }
+                default: {
+                    request.setAttribute("mensaje", "Acción no reconocida");
+                    break;
+                }
+                
+            }
+
+            request.getRequestDispatcher("Vendedor.jsp").forward(request, response);
+        }
+        
+        
+         if (menu.equals("Mueble")) {
+            MuebleDAO mdao = new MuebleDAO();
+
+            if (accion == null) {
+                accion = "Listar"; // Acción por defecto
+            }
+
+            switch (accion) {
+                case "Listar": {
+                    List<Mueble> lista = mdao.listar();
+                   
+                    request.setAttribute("lista", lista);
+                    
+                    break;
+                }
+                case "Agregar":{
+                    Mueble m = new Mueble();
+                    int id = Integer.parseInt(request.getParameter("txtRef"));
+                    String nom = request.getParameter("txtNombre");
+                    String tipo = request.getParameter("txtTipo");
+                    double alto = Double.parseDouble(request.getParameter("txtAlto"));
+                    double ancho = Double.parseDouble(request.getParameter("txtAncho"));
+                    double prof = Double.parseDouble(request.getParameter("txtProf"));
+                    String mat = request.getParameter("txtMat");
+                    String color = request.getParameter("txtColor");
+                    long price = Long.parseLong(request.getParameter("txtPrice"));
+                    int cant = Integer.parseInt(request.getParameter("txtCant"));
+                    String url = request.getParameter("txtUrl");
+                    
+                    m.setReferencia(id);
+                    m.setNombre(nom);
+                    m.setTipo(tipo);
+                    m.setAlto(alto);
+                    m.setAncho(ancho);
+                    m.setProfundidad(prof);
+                    m.setMaterial(mat);
+                    m.setColor(color);
+                    m.setPrecio(price);
+                    m.setCantidad(cant);
+                    m.setUrl(url);
+                   
+                    mdao.insertar(m);
+
+                    response.sendRedirect("Catalogo?menu=Mueble&accion=Listar");
+                    return;
+                
+                }
+                case "Editar":{
+                    int idm = Integer.parseInt(request.getParameter("id"));
+                    Mueble m = mdao.listarId(idm);
+                    request.setAttribute("mueble", m);
+                    List lista2 = mdao.listar();
+                    request.setAttribute("lista", lista2);
+                    break;
+                }
+                case "Actualizar" : {
+                    Mueble m = new Mueble();
+                    int id = Integer.parseInt(request.getParameter("txtRef"));
+                    String nom = request.getParameter("txtNombre");
+                    String tipo = request.getParameter("txtTipo");
+                    double alto = Double.parseDouble(request.getParameter("txtAlto"));
+                    double ancho = Double.parseDouble(request.getParameter("txtAncho"));
+                    double prof = Double.parseDouble(request.getParameter("txtProf"));
+                    String mat = request.getParameter("txtMat");
+                    String color = request.getParameter("txtColor");
+                    long price = Long.parseLong(request.getParameter("txtPrice"));
+                    int cant = Integer.parseInt(request.getParameter("txtCant"));
+                    String url = request.getParameter("txtUrl");
+                    
+                    m.setReferencia(id);
+                    m.setNombre(nom);
+                    m.setTipo(tipo);
+                    m.setAlto(alto);
+                    m.setAncho(ancho);
+                    m.setProfundidad(prof);
+                    m.setMaterial(mat);
+                    m.setColor(color);
+                    m.setPrecio(price);
+                    m.setCantidad(cant);
+                    m.setUrl(url);
+                    
+                    mdao.actualizar(m);
+                    List lista3 = mdao.listar();
+                    request.setAttribute("lista", lista3);
+                    break;
+                
+                }
+                case "Delete":{
+                    int idm = Integer.parseInt(request.getParameter("txtRef"));
+                    mdao. eliminar(idm);
+                    response.sendRedirect("Catalogo?menu=Mueble&accion=Listar");
+                    return;
+                }
+                default: {
+                    request.setAttribute("mensaje", "Acción no reconocida");
+                    break;
+                }
+                
+            }
+
+            request.getRequestDispatcher("Mueble.jsp").forward(request, response);
+        }
+        
         if(menu.equals("catalogo")){
         MuebleDAO mbdao = new MuebleDAO();
         List<Mueble> listaMuebles = mbdao.listar();

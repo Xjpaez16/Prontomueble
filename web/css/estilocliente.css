@@ -61,15 +61,19 @@ header{
 }
 .container.mt-4 {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    flex-direction: column; /* Asegura que los elementos se apilen verticalmente */
+    align-items: center; /* Centra todo horizontalmente */
     gap: 20px;
     padding: 10px;
 }
 
-/* Estilo para las columnas */
-.container.mt-4 .col-md-6{
-    width: 30%;
+/* Formulario centrado */
+.container.mt-4 .col-md-6 {
+    width: 50%; /* Ajusta el ancho del formulario */
+    max-width: 500px; /* Máximo tamaño para evitar que sea demasiado ancho */
+    margin: auto; /* Centra horizontalmente */
+    display: flex;
+    justify-content: center;
 }
 .container.mt-4 .col-sm-12 {
     width: 70%;
@@ -133,6 +137,59 @@ header{
     
 }
 
+.container.mt-4 {
+    display: flex;
+    flex-direction: column; /* Asegura que los elementos se apilen verticalmente */
+    align-items: center; /* Centra todo horizontalmente */
+    gap: 20px;
+    padding: 10px;
+    width: 100%;
+}
+
+/* Formulario centrado */
+.container.mt-4 .col-md-6 {
+    width: 50%; /* Ajusta el ancho del formulario */
+    max-width: 500px; /* Máximo tamaño */
+    margin: auto; /* Centra horizontalmente */
+    display: flex;
+    justify-content: center;
+}
+
+/* Tabla centrada */
+.container.mt-4 .col-sm-12 {
+    padding-top: 50px; 
+    width: 80%; /* Ajusta el ancho de la tabla */
+    max-width: 1500px; /* Máximo tamaño */
+    overflow-x: auto;
+    margin: auto; /* Centra horizontalmente */
+    width: 1500px;
+}
+
+/* Estilos de la tabla */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table thead {
+    background-color: black;
+    color: white;
+    text-align: center;
+}
+
+.table th,
+.table td {
+    text-align: center;
+    padding: 15px; /* Espaciado interno sin aumentar la tabla */
+    border: 1px solid #ddd;
+    word-wrap: break-word;
+    font-size: 16px;
+    width: 180px;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f1f1;
+}
 
 
 .button {

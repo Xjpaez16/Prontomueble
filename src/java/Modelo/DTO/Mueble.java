@@ -10,7 +10,7 @@ package Modelo.DTO;
  * @author ielcj
  */
 public class Mueble {
-    private Long referencia;
+    private int referencia;
     private String nombre;
     private String tipo;
     private double alto;
@@ -22,11 +22,11 @@ public class Mueble {
     private int cantidad;
     private String url;
 
-    public Mueble(Long referencia) {
+    public Mueble(int referencia) {
         this.referencia = referencia;
     }
     
-    public Mueble(Long referencia, String nombre, String tipo, double alto, double ancho, double profundidad, String material, String color, Long precio, int cantidad, String url) {
+    public Mueble(int referencia, String nombre, String tipo, double alto, double ancho, double profundidad, String material, String color, Long precio, int cantidad, String url) {
         this.referencia = referencia;
         this.nombre = nombre;
         this.tipo = tipo;
@@ -40,11 +40,14 @@ public class Mueble {
         this.url = url;
     }
 
-    public Long getReferencia() {
+    public Mueble() {
+    }
+
+    public int getReferencia() {
         return referencia;
     }
 
-    public void setReferencia(Long referencia) {
+    public void setReferencia(int referencia) {
         this.referencia = referencia;
     }
 

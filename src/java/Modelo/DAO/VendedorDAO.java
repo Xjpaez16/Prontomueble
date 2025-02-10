@@ -6,7 +6,7 @@ package Modelo.DAO;
 import Config.Conexion;
 import Modelo.DTO.Vendedor;
 import Modelo.DTO.TelefonoV;
-
+import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -85,7 +85,7 @@ public class VendedorDAO {
     }
 
     private void insertarTelefonos(Vendedor vendedor) {
-        String sql = "INSERT INTO telefono_v (telefono, id_v) VALUES (?, ?)";
+        String sql = "INSERT INTO telefono_v (n_telefono, id_v) VALUES (?, ?)";
 
         try (Connection con = cn.Conexion(); PreparedStatement stmt = con.prepareStatement(sql)) {
             for (TelefonoV telefono : vendedor.getTelefonos()) {
@@ -100,9 +100,9 @@ public class VendedorDAO {
         }
     }
 
-    public List<Vendedor> listarVendedores() {
+    public List<Vendedor> ListaVendedores() {
         List<Vendedor> listaVendedores = new ArrayList<>();
-        String sql = "SELECT v.id, v.nombre, v.usuario, v.clave, t.telefono "
+        String sql = "SELECT v.id, v.nombre, v.usuario, v.clave, t.n_telefono "
                 + "FROM vendedor v "
                 + "LEFT JOIN telefono_v t ON v.id = t.id_v";
 
@@ -115,7 +115,7 @@ public class VendedorDAO {
                 String nombre = rs.getString("nombre");
                 String usuario = rs.getString("usuario");
                 String clave = rs.getString("clave");
-                String telefono = rs.getString("telefono");
+                String telefono = rs.getString("n_telefono");
 
                 if (vendedorIdActual == null || !vendedorIdActual.equals(id)) {
                     vendedorActual = new Vendedor(id, nombre, usuario, clave);
@@ -134,11 +134,54 @@ public class VendedorDAO {
 
         return listaVendedores;
     }
+    
+    
+     public Vendedor listarId(Long id) {
+        Vendedor v = null; 
+        String sql = "SELECT v.*, t.n_telefono "
+                + "FROM vendedor v "
+                + "LEFT JOIN telefono_v t ON v.id = t.id_v "
+                + "WHERE v.id = ?";
+
+        try {
+            con = cn.Conexion();
+            ps = con.prepareStatement(sql);
+            ps.setLong(1, id);  
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                if (v == null) {  
+                    v = new Vendedor();
+                    v.setId(rs.getLong("id"));
+                    v.setNombre(rs.getString("nombre"));
+                    v.setUsuario(rs.getString("usuario"));
+                    v.setClave(rs.getString("clave"));
+
+                    v.setTelefonos(new ArrayList<>());  
+                }
+
+               
+                String telefono = rs.getString("n_telefono");
+                if (telefono != null) {
+                    v.getTelefonos().add(new TelefonoV(telefono, v));
+                }
+            }
+
+            rs.close();
+            ps.close();
+            con.close();
+
+        } catch (SQLException e) {
+            System.out.println("Error al listar vendedor por ID: " + e);
+        }
+
+        return v;
+    }
 
     public void actualizarVendedor(Vendedor vendedor) {
         String sqlActualizarVendedor = "UPDATE vendedor SET nombre = ?, usuario = ?, clave = ? WHERE id = ?";
         String sqlEliminarTelefonos = "DELETE FROM telefono_v WHERE id_v = ?";
-        String sqlInsertarTelefono = "INSERT INTO telefono_v (telefono, id_v) VALUES (?, ?)";
+        String sqlInsertarTelefono = "INSERT INTO telefono_v (n_telefono, id_v) VALUES (?, ?)";
 
         try (Connection con = cn.Conexion()) {
             try (PreparedStatement stmtVendedor = con.prepareStatement(sqlActualizarVendedor)) {

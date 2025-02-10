@@ -26,6 +26,9 @@ public class Proveedor {
         this.p_contacto = p_contacto;
         this.telefonos = new ArrayList<>();
     }
+
+    public Proveedor() {
+    }
     public void aggTelefono(TelefonoPr telefono){
         this.telefonos.add(telefono);
         telefono.setProveedor(this);

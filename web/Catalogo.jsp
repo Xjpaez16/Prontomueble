@@ -23,8 +23,9 @@
             <ul>
                 
                 <li><a href="Catalogo?menu=Cliente&accion=Listar">Clientes</a></li>
-                <li><a href="#Productos">Proovedores</a></li>
-                <li><a href="sobren.html"></a></li>
+                <li><a href="Catalogo?menu=Proveedor&accion=Listar">Proveedores</a></li>
+                <li><a href="Catalogo?menu=Vendedor&accion=Listar">Vendedores</a></li>
+                <li><a href="Catalogo?menu=Mueble&accion=Listar">Mueble</a></li>
             </ul>
                 <label for="check" class="esconder-menu">
                

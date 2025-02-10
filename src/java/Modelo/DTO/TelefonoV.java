@@ -17,6 +17,9 @@ public class TelefonoV {
         this.vendedor = vendedor;
     }
 
+    public TelefonoV() {
+    }
+
     public String getnTelefono() {
         return nTelefono;
     }

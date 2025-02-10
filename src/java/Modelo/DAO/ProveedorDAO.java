@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import Modelo.DTO.Proveedor;
 import Modelo.DTO.TelefonoPr;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,6 +96,49 @@ public class ProveedorDAO {
 
         return listaProveedores;
     }
+    
+    public Proveedor listarId(Long id) {
+        Proveedor p = null; 
+        String sql = "SELECT p.*, t.n_telefono "
+                + "FROM proveedor p "
+                + "LEFT JOIN telefono_pr t ON p.id = t.id_p "
+                + "WHERE p.id = ?";
+
+        try {
+            con = cn.Conexion();
+            ps = con.prepareStatement(sql);
+            ps.setLong(1, id);  
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                if (p == null) {  
+                    p = new Proveedor();
+                    p.setId(rs.getLong("id"));
+                    p.setNombre(rs.getString("nombre"));
+                    p.setDireccion(rs.getString("direccion"));
+                    p.setP_contacto(rs.getString("persona_contacto"));
+
+                    p.setTelefonos(new ArrayList<>());  
+                }
+
+               
+                String telefono = rs.getString("n_telefono");
+                if (telefono != null) {
+                    p.getTelefonos().add(new TelefonoPr(telefono, p));
+                }
+            }
+
+            rs.close();
+            ps.close();
+            con.close();
+
+        } catch (SQLException e) {
+            System.out.println("Error al listar cliente por ID: " + e);
+        }
+
+        return p;
+    }
+    
     public void actualizarProveedor(Proveedor proveedor) {
         String sqlProveedor = "UPDATE proveedor SET nombre = ?, direccion = ?, persona_contacto = ? WHERE id = ?";
         String sqlEliminarTelefonos = "DELETE FROM telefono_pr WHERE id_p = ?";
