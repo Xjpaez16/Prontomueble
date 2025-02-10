@@ -19,6 +19,10 @@ public class TelefonoC {
         this.cliente = cliente;
     }
 
+    public TelefonoC() {
+    }
+    
+
     public String getnTelefono() {
         return nTelefono;
     }

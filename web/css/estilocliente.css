@@ -1,0 +1,262 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 9/02/2025, 5:29:39 p. m.
+    Author     : ielcj
+*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins',sans-serif;
+}
+
+/*HEADER*/
+header{
+    height: 100px;
+    background-color: white;
+    padding: 0 50px;
+    color: black;
+    display: flex;
+    align-items: center;
+}
+
+.logo{
+    height: 180px;
+    width: 280px;
+    transition: 1.5s;
+}
+
+.logo:hover{
+    transform: scale(1.1);
+}
+
+.menu{
+    display: flex;
+    justify-content: center; /* Centra el contenido dentro del contenedor del menú */
+    flex-grow: 1;
+}
+
+.menu ul li{
+    display: inline;
+}
+.menu ul li a{
+    text-transform: uppercase;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+    padding: 0 20px;
+    padding-right: 100px;
+    transition: 0.4s;
+}
+.menu ul li a:hover,
+.mostrar-menu:hover,
+.esconder-menu:hover{
+    color: brown;
+}
+.container.mt-4 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 10px;
+}
+
+/* Estilo para las columnas */
+.container.mt-4 .col-md-6{
+    width: 30%;
+}
+.container.mt-4 .col-sm-12 {
+    width: 70%;
+    height: 100%;
+    
+}
+
+/* Formulario de Cliente */
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+    
+}
+
+.card-header {
+    font-weight: bold;
+    
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.form-control,
+.form-select {
+    border-radius: 5px;
+}
+
+
+.d-flex button {
+    width: 48%;
+}
+
+.col-sm-12{
+    
+    width: 100%;
+    overflow-x: auto;
+}
+.table {
+    width: 100%;
+    
+    
+}
+
+.table thead {
+    background-color: black;
+    color: white;
+}
+
+.table th,
+.table td {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    width: 100%;
+    
+}
+
+.table tbody tr:hover {
+    background-color: #f1f1f1;
+    
+}
+
+
+
+.button {
+    position: relative;
+    width: 150px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border: 1px solid #cc0000;
+    background-color: #e50000;
+    overflow: hidden;
+    text-decoration: none;
+}
+
+.button, .button__icon, .button__text {
+    transition: all 0.3s;
+}
+
+.button .button__text {
+    transform: translateX(35px);
+    color: #fff;
+    font-weight: 600;
+}
+
+.button .button__icon {
+    position: absolute;
+    transform: translateX(109px);
+    height: 100%;
+    width: 39px;
+    background-color: #cc0000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button .svg {
+    width: 20px;
+}
+
+.button:hover {
+    background: #cc0000;
+    text-decoration: none;
+}
+
+.button:hover .button__text {
+    color: transparent;
+    text-decoration: none;
+}
+
+.button:hover .button__icon {
+    width: 148px;
+    transform: translateX(0);
+    text-decoration: none;
+}
+
+.button:active .button__icon {
+    background-color: #b20000;
+    text-decoration: none;
+}
+
+.button:active {
+    border: 1px solid #b20000;
+    text-decoration: none;
+}
+
+.Btnedit {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 150px;
+    height: 40px;
+    border: none;
+    padding: 0px 20px;
+    margin-bottom: 10px;
+    background-color: black;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition-duration: 0.3s;
+    text-decoration: none;
+}
+
+.Btnedit .svg {
+    width: 13px;
+    position: absolute;
+    right: 0;
+    margin-right: 20px;
+    fill: white;
+    transition-duration: 0.3s;
+}
+
+.Btnedit:hover {
+    color: transparent;
+    text-decoration: none;
+}
+
+.Btnedit:hover svg {
+    right: 43%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    transition-duration: 0.3s;
+    text-decoration: none;
+}
+
+.Btnedit:active {
+    transform: translate(3px, 3px);
+    transition-duration: 0.3s;
+    box-shadow: 2px 2px 0px white;
+    text-decoration: none;
+}
+
+/* Responsividad */
+@media (max-width: 1000px) {
+    .container.mt-4 {
+        flex-direction: column;
+    }
+
+    .container.mt-4 .col-md-6,
+    .container.mt-4 .col-sm-12 {
+        width: 100%;
+    }
+}
+
+

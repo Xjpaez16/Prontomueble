@@ -287,10 +287,11 @@ i{
     height: 100%;
 }
 
-.info-producto1 h2, 
-.info-producto1 ul li, 
-.info-producto1 p
-{    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+.info-producto h2, 
+.info-producto ul li, 
+.info-producto p
+{    
+     text-align: center;
 }
 
 .info-producto1{

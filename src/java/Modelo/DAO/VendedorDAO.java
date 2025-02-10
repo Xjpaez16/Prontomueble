@@ -20,6 +20,30 @@ public class VendedorDAO {
     PreparedStatement ps;
     ResultSet rs;
     int r;
+    public void consultaVendedorMayor() {
+        String sql = "SELECT f.id_v, v.nombre, COUNT(*) AS cantidad "
+                + "FROM factura f "
+                + "    JOIN vendedor v ON (f.id_v = v.id) "
+                + "GROUP BY f.id_v, v.nombre "
+                + "ORDER BY cantidad DESC "
+                + "LIMIT 1";
+        try (Connection con = cn.Conexion(); PreparedStatement stmt = con.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+            String consulta = null;
+            while (rs.next()) {
+                int id = rs.getInt("id_v");
+                String nombre = rs.getString("nombre");
+                int cantidad = rs.getInt("cantidad");
+                consulta = "id_v:\n" + id + "\nnombre:\n" + nombre + "\ncantidad:\n" + cantidad;
+            }
+            System.out.println(consulta);
+
+        } catch (Exception e) {
+            System.err.println("Error al consultar mayor vendedor: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+
     public Vendedor Validar(String user, String password){
         Vendedor v =  new Vendedor();
         String  sql = "SELECT * FROM vendedor WHERE usuario = ? AND clave = ?";

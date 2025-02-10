@@ -23,7 +23,41 @@ public class MuebleDAO {
     PreparedStatement ps;
     ResultSet rs;
     int r;
-    
+    public void consultaMueblesMayoresCompras() {
+
+        List<Object[]> lista = new ArrayList<>();
+
+        String sql = "SELECT m.referencia, m.nombre, SUM(cantidad_muebles) AS mas_vendidos "
+                + "FROM aparecer a "
+                + "    JOIN mueble m ON(a.id_m = m.referencia) "
+                + "GROUP BY m.referencia, m.nombre "
+                + "ORDER BY mas_vendidos DESC "
+                + "LIMIT 3";
+
+        try (Connection con = cn.Conexion(); PreparedStatement stmt = con.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                int id = rs.getInt("referencia");
+                String nombre = rs.getString("nombre");
+                Long mas_vendidos = rs.getLong("mas_vendidos");
+
+                Object[] datosMuebles = {id, nombre, mas_vendidos};
+                lista.add(datosMuebles);
+            }
+
+            for (Object[] datos : lista) {
+                int id = (int) datos[0];
+                String nombre = (String) datos[1];
+                Long mas_vendidos = (Long) datos[2];
+
+                System.out.println("ID: " + id + ", Nombre: " + nombre + ", Mas vendidos: " + mas_vendidos);
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error al obtener clientes: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
     public List<Mueble> listar() {
         List<Mueble> lista = new ArrayList<>();
         String sql = "SELECT m.referencia, m.nombre, t.t_mueble, m.alto_d, m.ancho_d, m.profundidad_d, "

@@ -117,7 +117,48 @@ public class ClienteDAO {
 
         return listaClientes;
     }
+    public Cliente listarId(Long id) {
+        Cliente cli = null; 
+        String sql = "SELECT c.*, t.n_telefono "
+                + "FROM cliente c "
+                + "LEFT JOIN telefono_c t ON c.id = t.id_c "
+                + "WHERE c.id = ?";
 
+        try {
+            con = cn.Conexion();
+            ps = con.prepareStatement(sql);
+            ps.setLong(1, id);  
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                if (cli == null) {  
+                    cli = new Cliente();
+                    cli.setId(rs.getLong("id"));
+                    cli.setNombre(rs.getString("nombre"));
+                    cli.setDireccion(rs.getString("direccion"));
+                    cli.setCorreo(rs.getString("correo"));
+                    cli.setFecha_registro(rs.getDate("fecha_registro"));
+
+                    cli.setTelefonos(new ArrayList<>());  
+                }
+
+               
+                String telefono = rs.getString("n_telefono");
+                if (telefono != null) {
+                    cli.getTelefonos().add(new TelefonoC(telefono, cli));
+                }
+            }
+
+            rs.close();
+            ps.close();
+            con.close();
+
+        } catch (SQLException e) {
+            System.out.println("Error al listar cliente por ID: " + e);
+        }
+
+        return cli;
+    }
     public void actualizarCliente(Cliente cliente) {
         String sqlActualizarCliente = "UPDATE cliente SET nombre = ?, direccion = ?, correo = ?, fecha_registro = ? WHERE id = ?";
         String sqlEliminarTelefonos = "DELETE FROM telefono_c WHERE id_c = ?";
@@ -157,7 +198,41 @@ public class ClienteDAO {
             e.printStackTrace();
         }
     }
+    public void consultaClientesMayoresCompras() {
 
+        List<Object[]> lista = new ArrayList<>();
+
+        String sql = "SELECT c.id, c.nombre, SUM(f.precio) AS total_compras "
+                + "FROM factura f "
+                + "JOIN cliente c ON (f.id_c = c.id) "
+                + "GROUP BY c.id, c.nombre "
+                + "ORDER BY total_compras DESC "
+                + "LIMIT 3";
+
+        try (Connection con = cn.Conexion(); PreparedStatement stmt = con.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                String nombre = rs.getString("nombre");
+                Long total_compras = rs.getLong("total_compras");
+
+                Object[] datosCliente = {id, nombre, total_compras};
+                lista.add(datosCliente);
+            }
+
+            for (Object[] datos : lista) {
+                Long id = (Long) datos[0];
+                String nombre = (String) datos[1];
+                Long totalCompras = (Long) datos[2];
+
+                System.out.println("ID: " + id + ", Nombre: " + nombre + ", Total Compras: " + totalCompras);
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error al obtener clientes: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
     public void eliminarCliente(Long id) {
         String sqlTelefonos = "DELETE FROM telefono_c WHERE id_c = ?";
         String sqlCliente = "DELETE FROM cliente WHERE id = ?";

@@ -1,3 +1,5 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,19 +12,22 @@
 </head>
 <body>
     <header>
-        <img class="logo" src="img/logo.png" alt="logo">
+        <form action="Catalogo" method="POST">
+            <a href="Catalogo?menu=catalogo"> <img src="img/logo.png" class="logo"> </a>
+        </form>
         <input type="checkbox" id="check">
         <label for="check" class="mostrar-menu">
-            &#8801
+           
         </label>
         <nav class="menu">
             <ul>
-                <li><a href="index.html">Clientes</a></li>
+                
+                <li><a href="Catalogo?menu=Cliente&accion=Listar">Clientes</a></li>
                 <li><a href="#Productos">Proovedores</a></li>
                 <li><a href="sobren.html"></a></li>
             </ul>
                 <label for="check" class="esconder-menu">
-                    &#215
+               
                 </label>
         </nav>
     </header>
@@ -62,24 +67,26 @@
 
     <section id="Productos">
         <div id="productos-container" class="container-item">
-            <!-- Aquí se cargarán los productos dinámicamente -->
-            <!-- <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-            <c:forEach var="producto" items="${productos}">
+            <c:forEach var="mueble" items="${muebles}">
+                
                 <div class="item">
                     <figure>
-                        <img src="${producto.imagen}" alt="${producto.nombre}">
+                        <img src="${mueble.url}" alt="${mueble.nombre}">
                     </figure>
                     <div class="info-producto">
-                        <h2>${producto.nombre}</h2>
-                        <p class="precio">$ <fmt:formatNumber value="${producto.precio}" type="currency" /></p>
-                        <button class="boton" onclick="guardarProducto(${producto.id})">
-                            <a href="${producto.enlace}">Ver producto</a>
+                        
+                        <h2>${mueble.nombre}</h2>
+                        <p class="precio">$ <c:out value="${mueble.precio}" /></p>
+                        <p>Material: <c:out value="${mueble.material}" /></p>
+                        <p>Color: <c:out value="${mueble.color}" /></p>
+                        <p>Dimensiones: ${mueble.alto} x ${mueble.ancho} x ${mueble.profundidad} cm</p>
+                        <button class="boton">
+                            <a href="detalles.jsp?referencia=${mueble.referencia}">Ver producto</a>
                         </button>
                     </div>
                 </div>
-            </c:forEach>*/ -->
-
+            </c:forEach>
+     
         </div>
     </section>
     <script src="script.js" defer></script>

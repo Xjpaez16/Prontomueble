@@ -4,8 +4,11 @@
  */
 package Controlador;
 
+import Modelo.DAO.MuebleDAO;
 import Modelo.DAO.VendedorDAO;
+import Modelo.DTO.Mueble;
 import Modelo.DTO.Vendedor;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,6 +17,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  *
@@ -40,6 +44,10 @@ public class ControladorValidar extends HttpServlet {
         
         if (accion != null) {
             if (accion.equalsIgnoreCase("Ingresar")) {
+                MuebleDAO mbdao = new MuebleDAO();
+                List<Mueble> listaMuebles = mbdao.listar();
+                request.setAttribute("muebles", listaMuebles);
+                
                 String user = request.getParameter("txtuser");
                 String pass = request.getParameter("txtpass");
                 v = vdao.Validar(user, pass);
