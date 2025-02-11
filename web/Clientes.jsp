@@ -79,8 +79,8 @@
                                 
                             </div>
                             <div class="d-flex justify-content-between">
-                                <button type="submit" name="accion" value="Agregar" class="btn btn-primary w-60">Agregar</button>
-                                <button type="submit" name="accion" value="Actualizar" class="btn btn-success w-60">Actualizar</button>
+                                <button type="submit" name="accion" value="Agregar" class="btn btn-dark">Agregar</button>
+                                <button type="submit" name="accion" value="Actualizar" class="btn btn-secondary">Actualizar</button>
                             </div>
                         </form>
                     </div>
@@ -164,5 +164,63 @@
                                 </div>
         </div>
     </div>
+                                       <div class="container mt-2">
+                                           <div class="row">
+                                               <div class="col-md-6">
+
+                                                     
+                                                       
+                                                           <form action="Catalogo?menu=Cliente" method="POST">
+                                                               <div class="mb-3">
+                                                                   <label class="form-label">Fecha Inicial</label>
+                                                                   <input type="date" name="txtFecha" class="form-control" required>
+                                                               </div>
+                                                             
+                                                               <div class="d-flex justify-content-between">
+                                                                   <button type="submit" name="accion" value="clientesnuevos" class="btn btn-dark">buscar</button>
+                                                               </div>
+                                                           </form>
+                                                           
+                                                  
+                                               </div>
+                                               <div class="col-sm-12">
+                                                   <div class="card">
+                                                       <div class="card-body">
+
+                                                           <table class="table" style="width: 100%" id="clientesTable">
+                                                               <thead>
+                                                                   <tr class="text-center">
+                                                                       <th>#</th>
+                                                                       <th>NOMBRES</th>
+                                                                       <th>DIRECCIÓN</th>
+                                                                       <th>EMAIL</th>
+                                                                       <th>FECHA REGISTRO</th>
+                                                                       <th>TELÉFONOS</th>
+                                                                       
+                                                                   </tr>
+                                                               </thead>
+                                                               <tbody>
+                                                                   <c:forEach var="cliente" items="${listaClientesn}">
+                                                                       <tr>
+                                                                           <td class="text-center">${cliente.getId()}</td>
+                                                                           <td>${cliente.getNombre()}</td>
+                                                                           <td>${cliente.getDireccion()}</td>
+                                                                           <td>${cliente.getCorreo()}</td>
+                                                                           <td>${cliente.getFecha_registro()}</td>
+                                                                           <td>
+                                                                               <c:forEach var="telefono" items="${cliente.getTelefonos()}">
+                                                                                   ${telefono.getnTelefono()}<br>
+                                                                               </c:forEach>
+                                                                           </td>
+                                                                           
+                                                                       </tr>
+                                                                   </c:forEach>
+                                                               </tbody>
+                                                           </table>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                       </div>
     
 </body>

@@ -151,6 +151,14 @@ public class ControladorCatalogo extends HttpServlet {
 
                     break;
                 }
+                case "clientesnuevos" : {
+                    Date fecha_nuevos = Date.valueOf(request.getParameter("txtFecha"));
+                    List lista3 = cdao.clientesnuevos(fecha_nuevos);
+                    request.setAttribute("listaClientesn", lista3);
+                    break;
+                    
+                
+                }
                 
                 case "Delete":{
                     Long idc = Long.parseLong(request.getParameter("id"));
@@ -554,6 +562,7 @@ public class ControladorCatalogo extends HttpServlet {
         
         }
         if(menu.equals("GenerarVenta")){
+            
             ClienteDAO cdao = new ClienteDAO();
             VendedorDAO vdao = new VendedorDAO();
             String referenciaStr = request.getParameter("id");

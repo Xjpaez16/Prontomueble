@@ -57,7 +57,7 @@
                             </div>
                            
                             <div class="d-flex justify-content-between">
-                                <button type="submit" name="accion" value="consultaFacfecha" class="btn btn-primary w-60">Agregar</button>
+                                <button type="submit" name="accion" value="consultaFacfecha" class="btn btn-dark">Agregar</button>
                             </div>
                         </form>
                     </div>

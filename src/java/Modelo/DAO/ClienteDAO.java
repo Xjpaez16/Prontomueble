@@ -28,6 +28,48 @@ public class ClienteDAO {
     PreparedStatement ps;
     ResultSet rs;
     int r;
+    public List<Cliente> clientesnuevos(Date fecha_r) {
+        List<Cliente> listaClientes = new ArrayList<>();
+        String sql = "SELECT c.*, t.n_telefono "
+                + "FROM Cliente c "
+                + "LEFT JOIN telefono_c t ON c.id = t.id_c "
+                + "WHERE c.fecha_registro >= ?";
+
+        try (Connection con = cn.Conexion(); PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            
+            stmt.setDate(1, fecha_r);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                Cliente clienteActual = null;
+                Long clienteIdActual = null;
+
+                while (rs.next()) {
+                    Long id = rs.getLong("id");
+                    String nombre = rs.getString("nombre");
+                    String direccion = rs.getString("direccion");
+                    String correo = rs.getString("correo");
+                    LocalDate fechaRegistro = rs.getDate("fecha_registro").toLocalDate();
+                    String telefono = rs.getString("n_telefono");
+
+                    if (clienteIdActual == null || !clienteIdActual.equals(id)) {
+                        clienteActual = new Cliente(id, nombre, direccion, correo, Date.valueOf(fechaRegistro));
+                        listaClientes.add(clienteActual);
+                        clienteIdActual = id;
+                    }
+
+                    if (telefono != null && clienteActual != null) {
+                        clienteActual.aggTelefono(new TelefonoC(telefono, clienteActual));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error al obtener clientes: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return listaClientes;
+    }
     public void insertarCliente(Cliente cliente) {
         String sql = "INSERT INTO cliente (id, nombre, direccion, correo, fecha_registro) VALUES (?, ?, ?, ?, ?)";
 
