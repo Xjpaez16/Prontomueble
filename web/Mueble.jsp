@@ -39,13 +39,13 @@
             <div class="col-md-6">
                 <div class="card shadow-lg">
                     <div class="card-header bg-black text-white text-center">
-                        <h5>Formulario Cliente</h5>
+                        <h5>Formulario Mueble</h5>
                     </div>
                     <div class="card-body">
                         <form action="Catalogo?menu=Mueble" method="POST">
                             <div class="mb-3">
                                 <label class="form-label">REF</label>
-                                <input type="text" value="${mueble.getReferencia()}" name="txtRef" class="form-control" placeholder="Ingrese REF" required>
+                                <input type="text" value="${mueble.getReferencia()}" name="txtRef" class="form-control" placeholder="Ingrese REF" required ${not empty mueble.getReferencia() ? 'readonly' : ''}>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Nombre</label>
@@ -53,10 +53,10 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Tipo</label>
-                                <input type="text" class="form-control" value="${mueble.getTipo()}" readonly>
+                                
                                 <select name="txtTipo" class="form-control mt-2" required>
                                     <option value="Cocina" ${mueble.getTipo() == "Cocina" ? "selected" : ""}>Cocina</option>
-                                    <option value="Baño" ${mueble.getTipo() == "Baño" ? "selected" : ""}>Baño</option>
+                                    <option value="Bano" ${mueble.getTipo() == "Bano" ? "selected" : ""}>Baño</option>
                                     <option value="Alcoba" ${mueble.getTipo() == "Alcoba" ? "selected" : ""}>Alcoba</option>
                                 </select>
                             </div>
@@ -74,24 +74,24 @@
                             </div>
                                 <div class="mb-3">
                                     <label class="form-label">Material</label>
-                                    <input type="text" class="form-control" value="${mueble.getMaterial()}" readonly>
+                                   
                                     <select name="txtMat" class="form-control mt-2" required>
                                         <option value="Madera" ${mueble.getMaterial() == "Madera" ? "selected" : ""}>Madera</option>
                                         <option value="Metal" ${mueble.getMaterial() == "Metal" ? "selected" : ""}>Metal</option>
-                                        <option value="Plástico" ${mueble.getMaterial() == "Plástico" ? "selected" : ""}>Plástico</option>
+                                        <option value="Plastico" ${mueble.getMaterial() == "Plastico" ? "selected" : ""}>Plástico</option>
                                         <option value="Vidrio" ${mueble.getMaterial() == "Vidrio" ? "selected" : ""}>Vidrio</option>
                                         <option value="Cuero" ${mueble.getMaterial() == "Cuero" ? "selected" : ""}>Cuero</option>
                                         <option value="Tela" ${mueble.getMaterial() == "Tela" ? "selected" : ""}>Tela</option>
                                         <option value="Aluminio" ${mueble.getMaterial() == "Aluminio" ? "selected" : ""}>Aluminio</option>
                                         <option value="Hierro" ${mueble.getMaterial() == "Hierro" ? "selected" : ""}>Hierro</option>
-                                        <option value="Bambú" ${mueble.getMaterial() == "Bambú" ? "selected" : ""}>Bambú</option>
-                                        <option value="Acrílico" ${mueble.getMaterial() == "Acrílico" ? "selected" : ""}>Acrílico</option>
+                                        <option value="Bambu" ${mueble.getMaterial() == "Bambu" ? "selected" : ""}>Bambú</option>
+                                        <option value="Acrilico" ${mueble.getMaterial() == "Acrilico" ? "selected" : ""}>Acrílico</option>
                                     </select>
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label">Color</label>
-                                    <input type="text" class="form-control" value="${mueble.getColor()}" readonly>
+                                   
                                     <select name="txtColor" class="form-control mt-2" required>
                                         <option value="Rojo" ${mueble.getColor() == "Rojo" ? "selected" : ""}>Rojo</option>
                                         <option value="Azul" ${mueble.getColor() == "Azul" ? "selected" : ""}>Azul</option>
@@ -100,7 +100,7 @@
                                         <option value="Negro" ${mueble.getColor() == "Negro" ? "selected" : ""}>Negro</option>
                                         <option value="Blanco" ${mueble.getColor() == "Blanco" ? "selected" : ""}>Blanco</option>
                                         <option value="Gris" ${mueble.getColor() == "Gris" ? "selected" : ""}>Gris</option>
-                                        <option value="Marrón" ${mueble.getColor() == "Marrón" ? "selected" : ""}>Marrón</option>
+                                        <option value="Marron" ${mueble.getColor() == "Marron" ? "selected" : ""}>Marrón</option>
                                         <option value="Beige" ${mueble.getColor() == "Beige" ? "selected" : ""}>Beige</option>
                                         <option value="Naranja" ${mueble.getColor() == "Naranja" ? "selected" : ""}>Naranja</option>
                                     </select>
@@ -118,13 +118,16 @@
                                 <label class="form-label">Url</label>
                                 <div class="input-group">
                                     
-                                    <input type="file" value="${mueble.getUrl()}" name="txtUrl" class="form-control" placeholder="Ingrese el nombre de la imagen (ej: hola.jpg)" required>
+                                    <c:if test="${not empty mueble.getUrl()}">
+                                        <img src="${mueble.getUrl()}" alt="Imagen actual" class="img-thumbnail" style="max-width: 150px;">
+                                    </c:if>
+                                    <input type="file" name="txtUrl" class="form-control" accept="image/*" required>
                                 </div>
                             </div>
 
-                            <div class="d-flex justify-content-between">
-                                <button type="submit" name="accion" value="Agregar" class="btn btn-primary w-60">Agregar</button>
-                                <button type="submit" name="accion" value="Actualizar" class="btn btn-success w-60">Actualizar</button>
+                            <div class="d-flex justify-content-between ">
+                                <button type="submit" name="accion" value="Agregar" class="btn btn-dark">Agregar</button>
+                                <button type="submit" name="accion" value="Actualizar" class="btn btn-secondary">Actualizar</button>
                             </div>
                         </form>
                     </div>

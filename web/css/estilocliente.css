@@ -303,6 +303,9 @@ header{
     box-shadow: 2px 2px 0px white;
     text-decoration: none;
 }
+.btn btn-primary{
+    background: black;
+}
 
 /* Responsividad */
 @media (max-width: 1000px) {

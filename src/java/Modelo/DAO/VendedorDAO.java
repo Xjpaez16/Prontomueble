@@ -50,8 +50,10 @@ public class VendedorDAO {
         try {
             con=cn.Conexion();
             ps = con.prepareStatement(sql);
+            
             ps.setString(1, user);
             ps.setString(2, password);
+            
             rs = ps.executeQuery();
             while(rs.next()){
                 v.setId(rs.getLong("id"));

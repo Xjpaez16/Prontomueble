@@ -7,12 +7,15 @@ package Modelo.DAO;
 import Config.Conexion;
 import Modelo.DTO.Cliente;
 import Modelo.DTO.Factura;
+import Modelo.DTO.TelefonoC;
 import Modelo.DTO.Vendedor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 
 public class FacturaDAO {
@@ -22,14 +25,14 @@ public class FacturaDAO {
     ResultSet rs;
 
     public void insertarFactura(Factura factura) {
-        String sql = "INSERT INTO factura (id, precio, id_v, id_c, fecha_venta) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO factura (precio, id_v, id_c, fecha_venta) VALUES (?, ?, ?, ?)";
 
         try (Connection con = cn.Conexion(); PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setInt(1, factura.getId());
-            stmt.setLong(2, factura.getPrecio());
-            stmt.setLong(3, factura.getId_v().getId());
-            stmt.setLong(4, factura.getId_c().getId());
-            stmt.setDate(5, java.sql.Date.valueOf(factura.getFecha_venta()));
+      
+            stmt.setLong(1, factura.getPrecio());
+            stmt.setLong(2, factura.getId_v());
+            stmt.setLong(3, factura.getId_c());
+            stmt.setDate(4, factura.getFecha_venta());
 
             stmt.executeUpdate();
             System.out.println("Factura insertada correctamente.");
@@ -49,12 +52,11 @@ public class FacturaDAO {
                 Long precio = rs.getLong("precio");
                 Long idVendedor = rs.getLong("id_v");
                 Long idCliente = rs.getLong("id_c");
-                LocalDate fechaVenta = rs.getDate("fecha_venta").toLocalDate();
+                Date fechaVenta = rs.getDate("fecha_venta");
 
-                Vendedor vendedor = new Vendedor(idVendedor);
-                Cliente cliente = new Cliente(idCliente);
+       
 
-                Factura factura = new Factura(id, precio, vendedor, cliente, fechaVenta);
+                Factura factura = new Factura(id, precio, idVendedor, idCliente, fechaVenta);
                 listaFacturas.add(factura);
             }
         } catch (Exception e) {
@@ -69,9 +71,9 @@ public class FacturaDAO {
 
         try (Connection con = cn.Conexion(); PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setLong(1, factura.getPrecio());
-            stmt.setLong(2, factura.getId_v().getId());
-            stmt.setLong(3, factura.getId_c().getId());
-            stmt.setDate(4, java.sql.Date.valueOf(factura.getFecha_venta()));
+            stmt.setLong(2, factura.getId_v());
+            stmt.setLong(3, factura.getId_c());
+            stmt.setDate(4, (factura.getFecha_venta()));
             stmt.setInt(5, factura.getId());
 
             stmt.executeUpdate();
@@ -81,7 +83,62 @@ public class FacturaDAO {
             e.printStackTrace();
         }
     }
+    public Cliente listarId(Long id) {
+        Cliente cli = null;
+        String sql = "SELECT nombre FROM cliente WHERE id =" + id;
 
+        try {
+            con = cn.Conexion();
+            ps = con.prepareStatement(sql);
+            ps.setLong(1, id);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                if (cli == null) {
+                    cli = new Cliente();
+                    cli.setId(rs.getLong("id"));
+                    cli.setNombre(rs.getString("nombre"));
+                }
+
+                
+            }
+
+            rs.close();
+            ps.close();
+            con.close();
+
+        } catch (SQLException e) {
+            System.out.println("Error al listar cliente por ID: " + e);
+        }
+
+        return cli;
+    }
+    public int listarfac() {
+        
+        String sql = "SELECT MAX(id) FROM factura";
+        int id_f=0;
+        try {
+            con = cn.Conexion();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+              
+                id_f=rs.getInt("max");
+
+                
+            }
+
+            rs.close();
+            ps.close();
+            con.close();
+
+        } catch (SQLException e) {
+            System.out.println("Error al listar factura por ID maximo: " + e);
+        }
+
+        return id_f;
+    }
     public void eliminarFactura(int id) {
         String sql = "DELETE FROM factura WHERE id = ?";
 

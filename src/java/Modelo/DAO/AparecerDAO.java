@@ -29,8 +29,8 @@ public class AparecerDAO {
     public void insertarAparecer(Aparecer aparecer) {
         String sql = "INSERT INTO aparecer (id_m, id_f, cantidad_muebles) VALUES (?, ?, ?)";
         try (Connection con = cn.Conexion(); PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setLong(1, aparecer.getId_m().getReferencia());
-            stmt.setInt(2, aparecer.getId_f().getId());
+            stmt.setInt(1, aparecer.getId_m());
+            stmt.setInt(2, aparecer.getId_f());
             stmt.setInt(3, aparecer.getCant_muebles());
             stmt.executeUpdate();
             System.out.println("Registro de aparición insertado correctamente.");
@@ -40,48 +40,4 @@ public class AparecerDAO {
         }
     }
 
-    public List<Aparecer> listarAparecer() {
-        List<Aparecer> listaAparecer = new ArrayList<>();
-        String sql = "SELECT * FROM aparecer";
-        try (Connection con = cn.Conexion(); PreparedStatement stmt = con.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                Mueble mueble = new Mueble(rs.getInt("id_m"));
-                Factura factura = new Factura(rs.getInt("id_f"));
-                int cantMuebles = rs.getInt("cantidad_muebles");
-                Aparecer aparecer = new Aparecer(mueble, factura, cantMuebles);
-                listaAparecer.add(aparecer);
-            }
-        } catch (Exception e) {
-            System.err.println("Error al listar registros de aparición: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return listaAparecer;
-    }
-
-    public void actualizarAparecer(Aparecer aparecer) {
-        String sql = "UPDATE aparecer SET cantidad_muebles = ? WHERE id_m = ? AND id_f = ?";
-        try (Connection con = cn.Conexion(); PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setInt(1, aparecer.getCant_muebles());
-            stmt.setLong(2, aparecer.getId_m().getReferencia());
-            stmt.setInt(3, aparecer.getId_f().getId());
-            stmt.executeUpdate();
-            System.out.println("Registro de aparición actualizado correctamente.");
-        } catch (Exception e) {
-            System.err.println("Error al actualizar registro de aparición: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    public void eliminarAparecer(int idMueble, int idFactura) {
-        String sql = "DELETE FROM aparecer WHERE id_m = ? AND id_f = ?";
-        try (Connection con = cn.Conexion(); PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setInt(1, idMueble);
-            stmt.setInt(2, idFactura);
-            stmt.executeUpdate();
-            System.out.println("Registro de aparición eliminado correctamente.");
-        } catch (Exception e) {
-            System.err.println("Error al eliminar registro de aparición: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
 }    

@@ -4,11 +4,15 @@
  */
 package Controlador;
 
+import Modelo.DAO.AparecerDAO;
 import Modelo.DAO.ClienteDAO;
+import Modelo.DAO.FacturaDAO;
 import Modelo.DAO.MuebleDAO;
 import Modelo.DAO.ProveedorDAO;
 import Modelo.DAO.VendedorDAO;
+import Modelo.DTO.Aparecer;
 import Modelo.DTO.Cliente;
+import Modelo.DTO.Factura;
 import Modelo.DTO.Mueble;
 import Modelo.DTO.Proveedor;
 import Modelo.DTO.TelefonoC;
@@ -23,7 +27,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -376,7 +384,7 @@ public class ControladorCatalogo extends HttpServlet {
                     String color = request.getParameter("txtColor");
                     long price = Long.parseLong(request.getParameter("txtPrice"));
                     int cant = Integer.parseInt(request.getParameter("txtCant"));
-                    String url = request.getParameter("txtUrl");
+                    String url ="img/" + request.getParameter("txtUrl");
                     
                     m.setReferencia(id);
                     m.setNombre(nom);
@@ -416,7 +424,7 @@ public class ControladorCatalogo extends HttpServlet {
                     String color = request.getParameter("txtColor");
                     long price = Long.parseLong(request.getParameter("txtPrice"));
                     int cant = Integer.parseInt(request.getParameter("txtCant"));
-                    String url = request.getParameter("txtUrl");
+                    String url = "img/" + request.getParameter("txtUrl");
                     
                     m.setReferencia(id);
                     m.setNombre(nom);
@@ -450,6 +458,205 @@ public class ControladorCatalogo extends HttpServlet {
             }
 
             request.getRequestDispatcher("Mueble.jsp").forward(request, response);
+        }
+        if(menu.equals("Aggcarrito")){
+            switch(accion){
+                case "Carrito":{
+                    String referenciaStr = request.getParameter("id");
+
+                    if (referenciaStr != null) {
+                        int referencia = Integer.parseInt(referenciaStr);
+
+                        
+                        MuebleDAO muebleDAO = new MuebleDAO();
+                        Mueble mueble = muebleDAO.listarId(referencia);
+
+                        if (mueble != null) {
+                          
+                            HttpSession session = request.getSession();
+                            List<Mueble> carrito = (List<Mueble>) session.getAttribute("carrito");
+
+                            if (carrito == null) {
+                                carrito = new ArrayList<>();
+                            }
+
+                            
+                            boolean existe = false;
+                            for (Mueble m : carrito) {
+                                if (m.getReferencia() == referencia) {
+                                    existe = true;
+                                    break;
+                                }
+                            }
+
+                          
+                            if (!existe) {
+                                carrito.add(mueble);
+                            }
+
+                           
+                            session.setAttribute("carrito", carrito);
+                        }
+                    }
+
+                    
+                    response.sendRedirect("Catalogo?menu=catalogo");
+                    break;
+                
+                }
+                case "EliminarCarrito": {
+                    
+                    String referenciaStr = request.getParameter("id");
+
+                    if (referenciaStr != null) {
+                        int referencia = Integer.parseInt(referenciaStr);
+
+                       
+                        HttpSession session = request.getSession();
+                        List<Mueble> carrito = (List<Mueble>) session.getAttribute("carrito");
+
+                        if (carrito != null) {
+                            carrito.removeIf(m -> m.getReferencia() == referencia);
+                            session.setAttribute("carrito", carrito);
+                        }
+                    }
+
+                    
+                    response.sendRedirect("Catalogo?menu=catalogo");
+                    break;
+                }
+            }
+        
+        }
+        if(menu.equals("GenerarVenta")){
+            ClienteDAO cdao = new ClienteDAO();
+            VendedorDAO vdao = new VendedorDAO();
+            String referenciaStr = request.getParameter("id");
+
+            if (referenciaStr != null) {
+                int referencia = Integer.parseInt(referenciaStr);
+
+                MuebleDAO muebleDAO = new MuebleDAO();
+                Mueble mueble = muebleDAO.listarId(referencia);
+
+                if (mueble != null) {
+
+                    HttpSession session = request.getSession(true);
+                   
+                    List<Mueble> carrito = (List<Mueble>) session.getAttribute("carrito");
+
+                    if (carrito == null) {
+                        carrito = new ArrayList<>();
+                    }
+
+                    boolean existe = false;
+                    for (Mueble m : carrito) {
+                        if (m.getReferencia() == referencia) {
+                            existe = true;
+                            break;
+                        }
+                    }
+
+                    if (!existe) {
+                        carrito.add(mueble);
+                    }
+                    
+                    session.setAttribute("carrito", carrito);
+                  
+                }
+                
+            }
+           
+            switch(accion){
+                case "Lcliente" :{
+                    Long idc = Long.parseLong(request.getParameter("idCliente"));
+                    Cliente cl = cdao.listarId(idc);
+                    request.setAttribute("cliente", cl);
+                    break;
+                }
+                case "GenerarFactura":{
+                    Factura f = new Factura();
+                    FacturaDAO fdao = new FacturaDAO();
+                    HttpSession session = request.getSession();
+                    List<Mueble> carrito = (List<Mueble>) session.getAttribute("carrito");
+                    Long idCliente = Long.parseLong(request.getParameter("idCliente"));
+                    Long idVendedor = Long.parseLong(request.getParameter("idVendedor"));
+                  
+                         
+                    Long total = 0l;
+                    Long suma = 0l;
+                    String[] referencias = request.getParameterValues("referencia");
+                    String[] cantidadesStr = request.getParameterValues("cantidad");
+                    int[] referenciasI = new int[referencias.length];
+                    int[] cantidades = new int[cantidadesStr.length];
+                    
+                    for (int i = 0; i < cantidadesStr.length; i++) {
+                        try {
+                            cantidades[i] = Integer.parseInt(cantidadesStr[i]);
+                        } catch (NumberFormatException e) {
+                            cantidades[i] = 1; // Asigna 1 si hay un error en la conversión
+                        }
+                    }
+                    
+                       for (int i = 0; i < referencias.length; i++) {
+                        try {
+                            referenciasI[i] = Integer.parseInt(referencias[i]);
+                        } catch (NumberFormatException e) {
+                            referenciasI[i] = 1;                         
+                        }
+                    }
+                       
+                    if (referencias != null && cantidadesStr != null) {
+                        for (int i = 0; i < referencias.length; i++) {
+                            try {
+                                int cantidad = Integer.parseInt(cantidadesStr[i]);
+                                String referencia = referencias[i];
+
+                               
+                                System.out.println("Referencia: " + referencia + ", Cantidad: " + cantidad);
+                            } catch (NumberFormatException e) {
+                                System.out.println("Error en cantidad: " + cantidadesStr[i]);
+                            }
+                        }
+                    }else{
+                        System.out.println("vacio");
+                    }
+                    int i=0;
+                    for (Mueble mueble : carrito) {
+                        total +=cantidades[i] * mueble.getPrecio();
+                        System.out.println("multiplicado" +total);
+                        i++;
+                    }
+                    
+                    f.setPrecio(total);
+                    f.setId_v(idVendedor);
+                    f.setId_c(idCliente);
+                    f.setFecha_venta(Date.valueOf(LocalDate.now()));
+                    fdao.insertarFactura(f);
+                    int j=0;
+                    int id_f=fdao.listarfac();
+                    System.out.println("maximo" + id_f);
+                    AparecerDAO apdao =  new AparecerDAO();
+                    for (Mueble mueble : carrito) {
+                        Aparecer ap = new Aparecer(referenciasI[j], id_f, cantidades[j]  );
+                        apdao.insertarAparecer(ap);
+                        j++;
+                    }
+                    
+                    response.sendRedirect("Catalogo?menu=catalogo");
+                    return;
+                }
+                
+                    
+                
+                
+                default: {
+                    request.setAttribute("mensaje", "Acción no reconocida");
+                    break;
+                }
+                
+            }
+            request.getRequestDispatcher("Factura.jsp").forward(request, response);
         }
         
         if(menu.equals("catalogo")){

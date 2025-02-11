@@ -9,32 +9,37 @@ package Modelo.DTO;
  * @author ielcj
  */
 public class Aparecer {
-    private Mueble id_m;
-    private Factura id_f;
+    private int id_m;
+    private int id_f;
     private int cant_muebles;
 
-    public Aparecer(Mueble id_m, Factura id_f, int cant_muebles) {
+    public Aparecer(int id_m, int id_f, int cant_muebles) {
         this.id_m = id_m;
         this.id_f = id_f;
         this.cant_muebles = cant_muebles;
     }
 
-    public Mueble getId_m() {
+    
+
+    public int getId_m() {
         return id_m;
     }
 
-    public void setId_m(Mueble id_m) {
+    public void setId_m(int id_m) {
         this.id_m = id_m;
     }
 
-    public Factura getId_f() {
+    public int getId_f() {
         return id_f;
     }
 
-    public void setId_f(Factura id_f) {
+    public void setId_f(int id_f) {
         this.id_f = id_f;
     }
 
+   
+
+  
     public int getCant_muebles() {
         return cant_muebles;
     }

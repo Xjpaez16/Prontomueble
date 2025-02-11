@@ -39,7 +39,7 @@
             <div class="col-md-6">
                 <div class="card shadow-lg">
                     <div class="card-header bg-black text-white text-center">
-                        <h5>Formulario Cliente</h5>
+                        <h5>Formulario Proveedor</h5>
                     </div>
                     <div class="card-body">
                         <form action="Catalogo?menu=Proveedor" method="POST">

@@ -6,8 +6,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="shortcut icon" href="imagenes/loguito.png" type="image/x-icon">
+    <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
     <script src="https://kit.fontawesome.com/2a556287ee.js" crossorigin="anonymous"></script>
+    <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
     <title>Prontomueble</title>
 </head>
 <body>
@@ -26,7 +27,49 @@
                 <li><a href="Catalogo?menu=Proveedor&accion=Listar">Proveedores</a></li>
                 <li><a href="Catalogo?menu=Vendedor&accion=Listar">Vendedores</a></li>
                 <li><a href="Catalogo?menu=Mueble&accion=Listar">Mueble</a></li>
+                <li>
+                    <a onclick="toggleCarrito()">
+                        <ion-icon name="cart"></ion-icon> <span id="contador-carrito">( ${sessionScope.carrito.size()} )</span>
+                    </a>
+               
+
+                        <div id="carrito-sidebar" class="carrito-sidebar">
+                            <div class="carrito-header">
+                                <h2>Carrito de Compras</h2>
+                                <button class="cerrar-carrito" onclick="toggleCarrito()">✖</button>
+                            </div>
+                            <div class="carrito-contenido">
+                                <ul>
+                                    <c:forEach var="producto" items="${sessionScope.carrito}">
+                                        <li>
+                                            <img src="${producto.url}" alt="${producto.nombre}" width="550px" height="350px">
+                                            <span>${producto.nombre} - $${producto.precio}</span>
+                                            <a href="Catalogo?menu=Aggcarrito&accion=EliminarCarrito&id=${producto.referencia}">❌</a>
+                                        </li>
+                                    </c:forEach>
+                                        <form class="tupapa" action="Catalogo?menu=GenerarVenta" method="POST"><button class="cta" type="submit" name="accion" value="GenerarVenta">
+                                                <span class="hover-underline-animation"> Comprar ahora </span>
+                                                <svg
+                                                    id="arrow-horizontal"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="30"
+                                                    height="10"
+                                                    viewBox="0 0 46 16"
+                                                    >
+                                                <path
+                                                    id="Path_10"
+                                                    data-name="Path 10"
+                                                    d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z"
+                                                    transform="translate(30)"
+                                                    ></path>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                </ul>
+                            </div>
+                        </div></li>
             </ul>
+            
                 <label for="check" class="esconder-menu">
                
                 </label>
@@ -81,8 +124,9 @@
                         <p>Material: <c:out value="${mueble.material}" /></p>
                         <p>Color: <c:out value="${mueble.color}" /></p>
                         <p>Dimensiones: ${mueble.alto} x ${mueble.ancho} x ${mueble.profundidad} cm</p>
+                        <p>Stock: <c:out value="${mueble.cantidad}" /></p>
                         <button class="boton">
-                            <a href="detalles.jsp?referencia=${mueble.referencia}">Ver producto</a>
+                            <a href="Catalogo?menu=Aggcarrito&accion=Carrito&id=${mueble.referencia}">Agregar al carrito</a>
                         </button>
                     </div>
                 </div>
@@ -90,7 +134,8 @@
      
         </div>
     </section>
-    <script src="script.js" defer></script>
-    <script src="index.js"></script>
+    
+    <script src="js/index.js"></script>
+    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
 </body>
 </html>

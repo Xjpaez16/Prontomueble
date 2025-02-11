@@ -39,13 +39,13 @@
             <div class="col-md-6">
                 <div class="card shadow-lg">
                     <div class="card-header bg-black text-white text-center">
-                        <h5>Formulario Cliente</h5>
+                        <h5>Formulario Vendedor</h5>
                     </div>
                     <div class="card-body">
                         <form action="Catalogo?menu=Vendedor" method="POST">
                             <div class="mb-3">
                                 <label class="form-label">ID</label>
-                                <input type="text" value="${vendedor.getId()}" name="txtId" class="form-control" placeholder="Ingrese ID" required>
+                                <input type="text" value="${vendedor.getId()}" name="txtId" class="form-control" placeholder="Ingrese ID" required ${not empty vendedor.getId() ? 'readonly' : ''}>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Nombre</label>

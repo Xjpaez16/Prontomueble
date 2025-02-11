@@ -52,7 +52,8 @@ public class ControladorValidar extends HttpServlet {
                 String pass = request.getParameter("txtpass");
                 v = vdao.Validar(user, pass);
                 if (v.getUsuario() != null) {
-
+                   
+                   
                     session.setAttribute("usuario", v);
                     request.getRequestDispatcher("Catalogo.jsp").forward(request, response);
 

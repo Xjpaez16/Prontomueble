@@ -5,6 +5,9 @@
 package Modelo.DTO;
 
 import java.time.LocalDate;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -13,15 +16,37 @@ import java.time.LocalDate;
 public class Factura {
     private int id;
     private Long precio;
-    private Vendedor id_v;
-    private Cliente id_c;
-    private LocalDate fecha_venta;
+    private Long id_v;
+    private Long id_c;
+    private Date fecha_venta;
+    private List<String> referencias;
+    private List<Integer> cantidades;
+    
+ 
+    public Factura() {
+        this.referencias = new ArrayList<>();
+        this.cantidades = new ArrayList<>();
+    }
 
+    public void agregarItem(String referencia, int cantidad) {
+        this.referencias.add(referencia);
+        this.cantidades.add(cantidad);
+    }
+
+    public List<String> getReferencias() {
+        return referencias;
+    }
+
+    public List<Integer> getCantidades() {
+        return cantidades;
+    }
     public Factura(int id) {
         this.id = id;
     }
+
     
-    public Factura(int id, Long precio, Vendedor id_v, Cliente id_c, LocalDate fecha_venta) {
+    
+    public Factura(int id, Long precio, Long id_v, Long id_c, Date fecha_venta) {
         this.id = id;
         this.precio = precio;
         this.id_v = id_v;
@@ -45,29 +70,33 @@ public class Factura {
         this.precio = precio;
     }
 
-    public Vendedor getId_v() {
+    public Long getId_v() {
         return id_v;
     }
 
-    public void setId_v(Vendedor id_v) {
+    public void setId_v(Long id_v) {
         this.id_v = id_v;
     }
 
-    public Cliente getId_c() {
+    public Long getId_c() {
         return id_c;
     }
 
-    public void setId_c(Cliente id_c) {
+    public void setId_c(Long id_c) {
         this.id_c = id_c;
     }
 
-    public LocalDate getFecha_venta() {
+   
+
+    public Date getFecha_venta() {
         return fecha_venta;
     }
 
-    public void setFecha_venta(LocalDate fecha_venta) {
+    public void setFecha_venta(Date fecha_venta) {
         this.fecha_venta = fecha_venta;
     }
+
+  
     
     
 }
