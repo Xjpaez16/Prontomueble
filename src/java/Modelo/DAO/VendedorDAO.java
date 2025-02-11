@@ -20,29 +20,37 @@ public class VendedorDAO {
     PreparedStatement ps;
     ResultSet rs;
     int r;
-    public void consultaVendedorMayor() {
+    
+    public Object[] consultaVendedorMayor() {
         String sql = "SELECT f.id_v, v.nombre, COUNT(*) AS cantidad "
                 + "FROM factura f "
-                + "    JOIN vendedor v ON (f.id_v = v.id) "
+                + "JOIN vendedor v ON f.id_v = v.id "
                 + "GROUP BY f.id_v, v.nombre "
                 + "ORDER BY cantidad DESC "
                 + "LIMIT 1";
-        try (Connection con = cn.Conexion(); PreparedStatement stmt = con.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
-            String consulta = null;
-            while (rs.next()) {
-                int id = rs.getInt("id_v");
-                String nombre = rs.getString("nombre");
-                int cantidad = rs.getInt("cantidad");
-                consulta = "id_v:\n" + id + "\nnombre:\n" + nombre + "\ncantidad:\n" + cantidad;
-            }
-            System.out.println(consulta);
 
+        Object[] datosv = new Object[3]; // Esto debe ser suficiente para un solo vendedor
+        try (Connection con = cn.Conexion(); PreparedStatement stmt = con.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                Long id = rs.getLong("id_v");
+                String nombre = rs.getString("nombre");
+                String cantidad = rs.getString("cantidad");
+
+                // Rellenar el arreglo datosv con los resultados
+                datosv[0] = id;
+                datosv[1] = nombre;
+                datosv[2] = cantidad;
+            }
         } catch (Exception e) {
-            System.err.println("Error al consultar mayor vendedor: " + e.getMessage());
+            System.err.println("Error al obtener vendedores: " + e.getMessage());
             e.printStackTrace();
         }
 
+        return datosv;
     }
+
+
+
 
     public Vendedor Validar(String user, String password){
         Vendedor v =  new Vendedor();

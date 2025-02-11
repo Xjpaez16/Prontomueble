@@ -142,6 +142,16 @@ public class ControladorCatalogo extends HttpServlet {
                     break;
                 
                 }
+                
+                case "consultaCliente": {
+                    List<Object[]> listaclima = cdao.consultaClientesMayoresCompras();
+
+                    // Aquí pasamos los datos obtenidos a la vista
+                    request.setAttribute("listaCl", listaclima);
+
+                    break;
+                }
+                
                 case "Delete":{
                     Long idc = Long.parseLong(request.getParameter("id"));
                     cdao.eliminarCliente(idc);
@@ -340,12 +350,27 @@ public class ControladorCatalogo extends HttpServlet {
                     break;
                 
                 }
+                
+                case "consultaVendedor": {
+                    Object[] rta = vdao.consultaVendedorMayor();
+
+                    // Aquí pasamos los datos obtenidos a la vista
+                    request.setAttribute("vendedorId", rta[0]);
+                    request.setAttribute("vendedorNombre", rta[1]);
+                    request.setAttribute("cantidad", rta[2]);
+
+                    break;
+                }
+
+                
                 case "Delete":{
                     Long idv = Long.parseLong(request.getParameter("id"));
                     vdao.eliminarVendedor(idv);
                     response.sendRedirect("Catalogo?menu=Vendedor&accion=Listar");
                     return;
                 }
+                
+                
                 default: {
                     request.setAttribute("mensaje", "Acción no reconocida");
                     break;
@@ -646,9 +671,7 @@ public class ControladorCatalogo extends HttpServlet {
                     response.sendRedirect("Catalogo?menu=catalogo");
                     return;
                 }
-                
-                    
-                
+          
                 
                 default: {
                     request.setAttribute("mensaje", "Acción no reconocida");
@@ -658,6 +681,40 @@ public class ControladorCatalogo extends HttpServlet {
             }
             request.getRequestDispatcher("Factura.jsp").forward(request, response);
         }
+        
+        // Verifica si se está accediendo a la página de Reporte
+        if (menu.equals("Reporte")) {
+
+            // Si no hay parámetros de fecha aún, simplemente redirige al JSP para mostrar el formulario
+            if (accion == null || !accion.equals("consultaFacfecha")) {
+                // Esto asegura que se muestre el formulario cuando se ingresa al controlador
+                request.getRequestDispatcher("Reportesventa.jsp").forward(request, response);
+                return;
+            }
+
+            // Si se recibe una acción de consulta, procesamos las fechas
+            switch (accion) {
+                case "consultaFacfecha":
+                    // Recuperar las fechas del formulario
+                    Date fecha1 = Date.valueOf(request.getParameter("txtFecha1"));
+                    Date fecha2 = Date.valueOf(request.getParameter("txtFecha2"));
+
+                    // Obtener las facturas en el rango de fechas
+                    FacturaDAO fdao = new FacturaDAO();
+                    List<Factura> facturasfe = fdao.getFacturasPorFecha(fecha1, fecha2);
+
+                    // Pasamos la lista de facturas al JSP
+                    request.setAttribute("facturas", facturasfe);
+
+                    // Redirigir a la página del reporte de ventas
+                    request.getRequestDispatcher("Reportesventa.jsp").forward(request, response);
+                    return;
+            }
+        }
+
+
+        
+        
         
         if(menu.equals("catalogo")){
         MuebleDAO mbdao = new MuebleDAO();

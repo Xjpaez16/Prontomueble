@@ -151,5 +151,47 @@ public class FacturaDAO {
             e.printStackTrace();
         }
     }
+    
+    public List<Factura> getFacturasPorFecha(Date fechaInicio, Date fechaFin) {
+        List<Factura> facturas = new ArrayList<>();
+        String sql = "SELECT * FROM facturas_por_fecha WHERE fecha_venta BETWEEN ? AND ?";
+
+        // Establecer conexión
+        try (Connection con = cn.Conexion(); // Aquí asumo que cn.Conexion() es tu método de conexión
+                 PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            stmt.setDate(1, fechaInicio);
+            stmt.setDate(2, fechaFin);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Factura factura = new Factura();
+                factura.setId(rs.getInt("id_factura"));
+                factura.setPrecio(rs.getLong("precio"));
+                factura.setId_v(rs.getLong("id_vendedor"));
+                factura.setId_c(rs.getLong("id_cliente"));
+                factura.setFecha_venta(rs.getDate("fecha_venta"));
+
+                // Obtener el id_mueble como referencia (puedes ajustarlo si lo necesitas como otro tipo)
+                String referencia = String.valueOf(rs.getLong("id_mueble"));
+                int cantidadMuebles = rs.getInt("cantidad_muebles");
+
+                // Aquí asumo que tienes una lista de referencias y cantidades en tu objeto Factura
+                factura.getReferencias().add(referencia);
+                factura.getCantidades().add(cantidadMuebles);
+
+                // Añadir la factura a la lista
+                facturas.add(factura);
+            }
+
+            // Cerrar el ResultSet (aunque con try-with-resources esto ya se maneja automáticamente)
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return facturas;
+    }
+
   
 }

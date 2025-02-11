@@ -198,9 +198,10 @@ public class ClienteDAO {
             e.printStackTrace();
         }
     }
-    public void consultaClientesMayoresCompras() {
+    public List<Object[]> consultaClientesMayoresCompras() {
 
         List<Object[]> lista = new ArrayList<>();
+
 
         String sql = "SELECT c.id, c.nombre, SUM(f.precio) AS total_compras "
                 + "FROM factura f "
@@ -232,6 +233,8 @@ public class ClienteDAO {
             System.err.println("Error al obtener clientes: " + e.getMessage());
             e.printStackTrace();
         }
+        
+        return lista;
     }
     public void eliminarCliente(Long id) {
         String sqlTelefonos = "DELETE FROM telefono_c WHERE id_c = ?";

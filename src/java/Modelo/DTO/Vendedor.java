@@ -35,6 +35,10 @@ public class Vendedor {
         this.telefonos =  new ArrayList<>();
     }
 
+    public Vendedor(int id, String nombre, int cantidad) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     public List<TelefonoV> getTelefonos() {
         return telefonos;
     }

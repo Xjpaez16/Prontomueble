@@ -27,6 +27,7 @@
                 <li><a href="Catalogo?menu=Proveedor&accion=Listar">Proveedores</a></li>
                 <li><a href="Catalogo?menu=Vendedor&accion=Listar">Vendedores</a></li>
                 <li><a href="Catalogo?menu=Mueble&accion=Listar">Mueble</a></li>
+                <li><a href="Catalogo?menu=Reporte">REGISTRO FACTURA</a></li>
                 <li>
                     <a onclick="toggleCarrito()">
                         <ion-icon name="cart"></ion-icon> <span id="contador-carrito">( ${sessionScope.carrito.size()} )</span>

@@ -32,6 +32,7 @@
                     <li><a href="Catalogo?menu=Proveedor&accion=Listar">Proveedores</a></li>
                     <li><a href="Catalogo?menu=Vendedor&accion=Listar">Vendedores</a></li>
                     <li><a href="Catalogo?menu=Mueble&accion=Listar">Mueble</a></li>
+                    <li><a href="Catalogo?menu=Reporte">REGISTRO FACTURA</a></li>
                 </ul>
                 <label for="check" class="esconder-menu">
 

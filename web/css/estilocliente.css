@@ -307,6 +307,37 @@ header{
     background: black;
 }
 
+.samibtn{
+    display: flex;
+    padding-top: 20px;
+    justify-content: center;
+}
+.botoncon {
+    background-color: #000000;  /* Color de fondo negro */
+    color: white;
+    padding: 8px 16px;  /* Tamaño más pequeño */
+    border: none;
+    border-radius: 5px;  /* Bordes redondeados */
+    font-size: 14px;  /* Fuente más pequeña */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;  /* Padding por fuera para separar de la tabla */
+}
+
+.botoncon:hover {
+    background-color: #333333;  /* Cambia el color al pasar el ratón */
+    transform: translateY(-2px);
+}
+
+.botoncon:active {
+    background-color: #111111;  /* Color más oscuro al hacer clic */
+    transform: translateY(2px);
+}
+
+
+
+
 /* Responsividad */
 @media (max-width: 1000px) {
     .container.mt-4 {
