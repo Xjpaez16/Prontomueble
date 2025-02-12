@@ -24,7 +24,7 @@ public class MuebleDAO {
     PreparedStatement ps;
     ResultSet rs;
     int r;
-    public void consultaMueblesMayoresCompras() {
+    public List<Object[]> consultaMueblesMayoresCompras() {
 
         List<Object[]> lista = new ArrayList<>();
 
@@ -58,6 +58,7 @@ public class MuebleDAO {
             System.err.println("Error al obtener clientes: " + e.getMessage());
             e.printStackTrace();
         }
+        return lista;
     }
     public List<Mueble> listar() {
         List<Mueble> lista = new ArrayList<>();

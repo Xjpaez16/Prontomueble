@@ -477,6 +477,16 @@ public class ControladorCatalogo extends HttpServlet {
                     break;
                 
                 }
+                
+                case "consultaMueble": {
+                    List<Object[]> listaclima = mdao.consultaMueblesMayoresCompras();
+
+                    // Aquí pasamos los datos obtenidos a la vista
+                    request.setAttribute("listaCl", listaclima);
+
+                    break;
+                }
+                
                 case "Delete":{
                     int idm = Integer.parseInt(request.getParameter("txtRef"));
                     mdao. eliminar(idm);

@@ -156,6 +156,7 @@ public class FacturaDAO {
         List<Factura> facturas = new ArrayList<>();
         String sql = "SELECT * FROM facturas_por_fecha WHERE fecha_venta BETWEEN ? AND ?";
 
+
         // Establecer conexión
         try (Connection con = cn.Conexion(); // Aquí asumo que cn.Conexion() es tu método de conexión
                  PreparedStatement stmt = con.prepareStatement(sql)) {
